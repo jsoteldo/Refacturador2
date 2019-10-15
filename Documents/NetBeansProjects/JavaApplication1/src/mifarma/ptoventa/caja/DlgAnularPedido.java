@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -534,6 +535,12 @@ public class DlgAnularPedido extends JDialog {
         }
      //2016.09.30 LTAVARA Sólo se muestra en una anulacion parcial   
      lblEnter.setVisible(isNCParcial());
+     try{
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_F11);
+     }catch(Throwable ex){
+         log.error("error en el robot F11");
+     }
     }
 
     private void this_windowClosing(WindowEvent e) {
@@ -608,7 +615,8 @@ public class DlgAnularPedido extends JDialog {
     /* ************************************************************************ */
 
     private void cargaLogin() {
-        DlgLogin dlgLogin = new DlgLogin(myParentFrame, ConstantsPtoVenta.MENSAJE_LOGIN, true);
+        /*** INICIO ARAVELLO 23/09/2019 ***/
+        /*DlgLogin dlgLogin = new DlgLogin(myParentFrame, ConstantsPtoVenta.MENSAJE_LOGIN, true);
         dlgLogin.setRolUsuario(FarmaConstants.ROL_ADMLOCAL);
         dlgLogin.setVisible(true);
 
@@ -616,7 +624,8 @@ public class DlgAnularPedido extends JDialog {
             FarmaVariables.dlgLogin = dlgLogin;
             FarmaVariables.vAceptar = false;
         } else
-            cerrarVentana(false);
+            cerrarVentana(false);*/
+        /*** FIN    ARAVELLO 23/09/2019 ***/
     }
 
     private boolean validarCampos() {
@@ -858,11 +867,11 @@ public class DlgAnularPedido extends JDialog {
 
                 //if (UtilityEposTrx.isActFuncElectronica()) { //PROCESO ELECTRONICO ACTIVO
                 if(UtilityCPE.isActivoFuncionalidad()){
-
-                    FarmaUtility.showMessage(this,
+                    /*** INICIO ARAVELLO 23/09/2019 ***/ //Se comento
+                    /*FarmaUtility.showMessage(this,
                                              "Se anulará dicho pedido, pero se generará una solicitud de Nota de Crédito.",
-                                             pObj);
-                    
+                                             pObj);*/
+                    /*** FIN    ARAVELLO 23/09/2019 ***/
                     DlgNotaCreditoNueva dlgNotaCreditoNueva = new DlgNotaCreditoNueva(myParentFrame, "", true);
                     dlgNotaCreditoNueva.setNCParcial(isNCParcial());
                     dlgNotaCreditoNueva.setListProdNCParcial(productosNCParcial);

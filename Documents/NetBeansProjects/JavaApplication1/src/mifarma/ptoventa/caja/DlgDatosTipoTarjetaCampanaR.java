@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -333,6 +334,13 @@ public class DlgDatosTipoTarjetaCampanaR extends JDialog {
         }
         lstPanelTarjetas.get(0).activaPanel(txtNombreTarjeta, this.codFormaPagoDlg);
         txtNombreTarjeta.requestFocus();
+        try{
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+        }catch(Throwable ex){
+            log.error("",ex);
+        }
     }
     
     private void teclasDireccionales(KeyEvent e){

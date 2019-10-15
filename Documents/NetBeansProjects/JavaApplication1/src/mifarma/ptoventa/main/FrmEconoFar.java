@@ -5,6 +5,11 @@ import com.gs.mifarma.componentes.JButtonLabel;
 import com.gs.mifarma.componentes.JConfirmDialog;
 import com.gs.mifarma.componentes.JTextFieldSanSerif;
 
+import farmaciasperuanas.model.BeanVenta;
+
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -2166,7 +2171,57 @@ public class FrmEconoFar extends JFrame {
             mnuReportes_ProdSinVtaNDias.setText("13. Productos Sin Ventas en " +
                                                 VariablesPtoVenta.vNumeroDiasSinVentas.trim() + " Dias");
         }
-
+        /*** INICIO ARAVELLO 23/09/2019 ***/
+        for(BeanVenta vBeanVenta : VariablesRefacturadorElectronico.vListComprobantes){
+            try{
+                VariablesRefacturadorElectronico.vComprobanteActual=vBeanVenta;
+                String vCodGrupoCia = vBeanVenta.getCodGrupoCia();
+                String vCodLocal = vBeanVenta.getCodLocal();
+                String vNumCompPagoE = vBeanVenta.getNumCompPagoE();
+                String vNumPedVentaOld = DBRefacturadorElectronico.getNumPedidoVenta(vCodGrupoCia, vCodLocal, vNumCompPagoE);
+                vBeanVenta.setNumPedidoVentaOld(vNumPedVentaOld);
+                boolean isPedidoAnulado  = DBRefacturadorElectronico.isPedidoAnulado(vCodGrupoCia, vCodLocal, vNumPedVentaOld);
+                
+                DBRefacturadorElectronico.backupPedidoVenta(vCodGrupoCia, vCodLocal, vNumPedVentaOld);
+                
+                ArrayList vListVentaCab = DBRefacturadorElectronico.findVentaCabecera(vCodGrupoCia, vCodLocal, vNumPedVentaOld);
+                ArrayList vVentaCab = (ArrayList) vListVentaCab.get(0);
+                String vIndFidelizado = (String) vVentaCab.get(0);
+                vBeanVenta.setFidelizado(vIndFidelizado.trim().equalsIgnoreCase("S") ? true : false );
+                String vDniFidelizado = (String) vVentaCab.get(1);
+                vBeanVenta.setDniFidelizado(vDniFidelizado);
+                String vRuc = (String) vVentaCab.get(2);
+                vBeanVenta.setRuc(vRuc);
+                String vIndConvenio = (String) vVentaCab.get(3);
+                vBeanVenta.setIsConvenio(vIndConvenio.equalsIgnoreCase("S") ? true : false);
+                if(vBeanVenta.isConvenio()){
+                    String vCoConvenio = (String) vVentaCab.get(4);
+                    vBeanVenta.setCodConvenio(vCoConvenio.trim());
+                    ArrayList vDatosConvenio = DBRefacturadorElectronico.findInfoConvenio(vCodGrupoCia, vCodLocal);
+                    vBeanVenta.setDatosConvenio(vDatosConvenio);
+                    String vCoPago = (String) vVentaCab.get(5);
+                    vBeanVenta.setCoPago(vCoPago);
+                    String vCodCliente = (String) vVentaCab.get(6);
+                    vBeanVenta.setCodCliente(vCodCliente.trim());
+                    String vNomCliente = (String) vVentaCab.get(7);
+                    vBeanVenta.setNomCliente(vNomCliente.trim());
+                }
+                //if(isPedidoAnulado){
+                    ArrayList vDetalle = DBRefacturadorElectronico.buscarDetallePedidoVenta(vCodGrupoCia, vCodLocal);
+                    vBeanVenta.setDetallePedido(vDetalle);
+                ArrayList vListComprobantes = DBRefacturadorElectronico.consultaComprobante(vCodGrupoCia, vCodLocal, vNumCompPagoE);
+                ArrayList vComprobante = (ArrayList) vListComprobantes.get(0);
+                vBeanVenta.setCabComprobante(vComprobante);
+                    //mnuCaja_PedidoCompleto.doClick();
+                    mnuVentas_GenerarPedido.doClick(); 
+                    vBeanVenta.setCompleto(true);
+                //}
+            }catch(Throwable ex){
+                log.error("",ex);
+            }
+            
+        }
+        /*** FIN    ARAVELLO 23/09/2019 ***/
     }
 
     private void mnuSalir_SalirSistema_actionPerformed(ActionEvent e) {
@@ -2184,8 +2239,10 @@ public class FrmEconoFar extends JFrame {
                 return;
         }
 
-        generarPedido();
-        llamarDlgLogin();
+        generarPedido(); 
+        /*** INICIO ARAVELLO 10/10/2019 ***///Comentado
+        //        llamarDlgLogin();
+        /*** FIN    ARAVELLO 10/10/2019 ***/
     }
 
     private void mnuCaja_CobrarPedido_actionPerformed(ActionEvent e) {
@@ -3236,23 +3293,23 @@ public class FrmEconoFar extends JFrame {
         dlgResumenPedido.setFrameEconoFar(this);
         dlgResumenPedido.setVisible(true);
         dlgResumenPedido = null;
-        while (FarmaVariables.vAceptar) {
-            if (VariablesVentas.vIndPrecioCabeCliente.equalsIgnoreCase("S")) { //Inicio: ASOSA 03.02.2010
-                VariablesVentas.vIndPrecioCabeCliente = "N";
-                ind = 1;
-                break;
-            } else {
-                if (ind != 1) {
-                    log.info("Go Menu");
-                    generarPedido();
-                } else {
-                    ind = 0;
-                    break;
-                }
-            } //Fin: ASOSA 03.02.2010
-        }
-        if (!FarmaVariables.vAceptar)
-            verificaRolUsuario_sinAdmin();
+//        while (FarmaVariables.vAceptar) {
+//            if (VariablesVentas.vIndPrecioCabeCliente.equalsIgnoreCase("S")) { //Inicio: ASOSA 03.02.2010
+//                VariablesVentas.vIndPrecioCabeCliente = "N";
+//                ind = 1;
+//                break;
+//            } else {
+//                if (ind != 1) {
+//                    log.info("Go Menu");
+//                    generarPedido();
+//                } else {
+//                    ind = 0;
+//                    break;
+//                }
+//            } //Fin: ASOSA 03.02.2010
+//        }
+//        if (!FarmaVariables.vAceptar)
+//            verificaRolUsuario_sinAdmin();
     }
 
 
@@ -4962,26 +5019,26 @@ DBInventario.validarAsistenteAuditoria(FarmaVariables.vCodCia, FarmaVariables.vC
     private boolean medicoAuxiliar() {
         boolean vContinuar = false;
 
-        if (FarmaVariables.dlgLogin.verificaRol("065")) {
-            this.remove(mnuPtoVenta);
-            mnuPtoVenta.removeAll();
-            mnuPtoVenta.add(mnuEconoFar_Administracion);
-            mnuEconoFar_CM.setEnabled(true);
-            mnuEconoFar_CM.removeAll();
-            mnuEconoFar_CM.add(mnuCM_Consulta);
-
-            mnuEconoFar_Administracion.removeAll();
-            mnuAdministracion_Usuarios.removeAll();
-
-            mnuAdministracion_Usuarios.add(mnuUsuarios_CambioUsuario);
-            mnuEconoFar_Administracion.add(mnuAdministracion_Usuarios);
-
-            mnuPtoVenta.add(mnuEconoFar_CM);
-            mnuPtoVenta.add(mnuEconoFar_Salir);
-            mnuPtoVenta.add(mnuEconoFar_Ayuda);
-            this.setJMenuBar(mnuPtoVenta);
-            vContinuar = false;
-        } else {
+//        if (FarmaVariables.dlgLogin.verificaRol("065")) {
+//            this.remove(mnuPtoVenta);
+//            mnuPtoVenta.removeAll();
+//            mnuPtoVenta.add(mnuEconoFar_Administracion);
+//            mnuEconoFar_CM.setEnabled(true);
+//            mnuEconoFar_CM.removeAll();
+//            mnuEconoFar_CM.add(mnuCM_Consulta);
+//
+//            mnuEconoFar_Administracion.removeAll();
+//            mnuAdministracion_Usuarios.removeAll();
+//
+//            mnuAdministracion_Usuarios.add(mnuUsuarios_CambioUsuario);
+//            mnuEconoFar_Administracion.add(mnuAdministracion_Usuarios);
+//
+//            mnuPtoVenta.add(mnuEconoFar_CM);
+//            mnuPtoVenta.add(mnuEconoFar_Salir);
+//            mnuPtoVenta.add(mnuEconoFar_Ayuda);
+//            this.setJMenuBar(mnuPtoVenta);
+//            vContinuar = false;
+//        } else {
             mnuEconoFar_Administracion.removeAll();
             mnuAdministracion_Usuarios.removeAll();
             mnuEconoFar_CM.removeAll();
@@ -5008,7 +5065,7 @@ DBInventario.validarAsistenteAuditoria(FarmaVariables.vCodCia, FarmaVariables.vC
 
             quitaOpcionesAgregaTodos();
             vContinuar = true;
-        }
+//        }
         return vContinuar;
     }
 

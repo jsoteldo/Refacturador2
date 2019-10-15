@@ -7,6 +7,8 @@ import com.gs.mifarma.componentes.JPanelHeader;
 import com.gs.mifarma.componentes.JPanelWhite;
 import com.gs.mifarma.componentes.JTextFieldSanSerif;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import farmapuntos.bean.BeanAfiliado;
 import farmapuntos.bean.BeanTarjeta;
 
@@ -346,7 +348,27 @@ public class DlgFidelizacionBuscarTarjetas extends JDialog {
                 
             }
         }
-        
+        /*** INICIO ARAVELLO 09/10/2019 ***/
+        if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+            txtBuscar.setText(VariablesRefacturadorElectronico.vComprobanteActual.getDniFidelizado());
+            KeyEvent vKeyEventPressed = new KeyEvent(
+                                            txtBuscar,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_ENTER,
+                                           '\n');
+            KeyEvent vKeyEventTyped = new KeyEvent(
+                                            txtBuscar,
+                                            KeyEvent.KEY_TYPED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_UNDEFINED,
+                                           '\n');
+            txtBuscar_keyPressed(vKeyEventPressed);
+            txtBuscar_keyTyped(vKeyEventTyped);
+        }
+        /*** FIN    ARAVELLO 09/10/2019 ***/
     }
     
     public void procesaFuncionalidadFid(){

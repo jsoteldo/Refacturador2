@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -311,6 +312,14 @@ public class DlgBuscaClienteJuridico extends JDialog {
             rbtJuridico.setSelected(true);
             rbtNatural.setSelected(false);
         }
+        /*** INICIO ARAVELLO 09/10/2019 ***/
+        try{
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_F11);
+        }catch(Throwable ex){
+            log.error("",ex);
+        }
+        /*** FIN    ARAVELLO 09/10/2019 ***/
     }
 
     private void txtClienteJuridico_keyPressed(KeyEvent e) {

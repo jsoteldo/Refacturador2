@@ -6,6 +6,8 @@ import com.gs.mifarma.componentes.JConfirmDialog;
 import com.gs.mifarma.componentes.JLabelFunction;
 import com.gs.mifarma.componentes.JLabelOrange;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import farmapuntos.bean.BeanTarjeta;
 
 import java.awt.BorderLayout;
@@ -15,6 +17,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -894,7 +897,19 @@ public class DlgIngresoCantidad extends JDialog {
             this.repaint();
             FarmaUtility.centrarVentana(this);
         }
-        
+        /*** INICIO ARAVELLO 01/10/2019 ***/
+        try{
+            if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+                Robot robot = new Robot();
+                String vCantidad = (String)VariablesRefacturadorElectronico.vItemActual.get(1);
+                txtCantidad.setText(vCantidad);
+                txtCantidad.requestFocus();
+                robot.keyPress(KeyEvent.VK_ENTER);
+            }
+        }catch(Throwable ex){
+            log.error("ERROR EN REFACTURADOR",ex);
+        }
+        /*** FIN    ARAVELLO 01/10/2019 ***/
     }
 
     private void btnCantidad_actionPerformed(ActionEvent e) {

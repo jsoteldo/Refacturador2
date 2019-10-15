@@ -1,5 +1,9 @@
 package mifarma.ptoventa.reference;
 
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+import farmaciasperuanas.reference.UtilityRefacturadorElectronico;
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.Frame;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -29,6 +33,7 @@ import mifarma.common.DlgLogin;
 import mifarma.common.FarmaConnection;
 import mifarma.common.FarmaConstants;
 import mifarma.common.FarmaDBUtility;
+import mifarma.common.FarmaSecurity;
 import mifarma.common.FarmaTableModel;
 import mifarma.common.FarmaUtility;
 import mifarma.common.FarmaVariables;
@@ -755,7 +760,7 @@ public class UtilityPtoVenta {
     }
     
     
-    public static void muestraLogin(String pcadena) {
+    public static void muestraLogin(String pcadena) throws Throwable {
           //if ( readFileProperties() )
           if (true) {
               /*
@@ -793,14 +798,40 @@ public class UtilityPtoVenta {
                   log.debug("Problemas al carga el icono");
                   strRutaJpg = "Mifarma.jpg";
               }
-              ImageIcon imageIcono =
-                  new ImageIcon(FrmEconoFar.class.getResource("/mifarma/ptoventa/imagenes/Icono" + strRutaJpg));
+//              ImageIcon imageIcono =
+//                  new ImageIcon(FrmEconoFar.class.getResource("/mifarma/ptoventa/imagenes/Icono" + strRutaJpg));
               
               
-              String mensajeLogin = "Acceso " +pcadena;// tituloBaseFrame;
-              DlgLogin dlgLogin = new DlgLogin(new Frame(), mensajeLogin, true);
-              dlgLogin.setIconImage(imageIcono.getImage());
-              dlgLogin.setVisible(true);
+//              String mensajeLogin = "Acceso " +pcadena;// tituloBaseFrame;
+              /*** INICIO ARAVELLO 14/10/2019 ***/
+              String usuario = DBRefacturadorElectronico.findUsuario(
+                                                            VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                            VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal(),
+                                                            VariablesRefacturadorElectronico.vComprobanteActual.getNumCompPagoE());
+              VariablesRefacturadorElectronico.vComprobanteActual.setUsuario(usuario);
+              
+              UtilityRefacturadorElectronico.autenticar(VariablesRefacturadorElectronico.vComprobanteActual.getUsuario());
+              
+//              FarmaSecurity vSecurityLogin = new FarmaSecurity(usuario, clave);
+//              if (!vSecurityLogin.getLoginStatus().equalsIgnoreCase("01")) {
+//                  throw new Exception("ERROR EN LA AUTENTICACION");
+//              }
+//              FarmaVariables.vNuSecUsu = vSecurityLogin.getLoginSequential();
+//              FarmaVariables.vIdUsu = vSecurityLogin.getLoginCode();
+//              FarmaVariables.vNomUsu = vSecurityLogin.getLoginNombre();
+//              FarmaVariables.vPatUsu = vSecurityLogin.getLoginPaterno();
+//              FarmaVariables.vMatUsu = vSecurityLogin.getLoginMaterno();
+//              String clave = DBRefacturadorElectronico.getClaveUsu, pCodLocal, FarmaVariables.vNuSecUsu);
+//                  VariablesRefacturadorElectronico.vComprobanteActual.get;
+              FarmaVariables.vAceptar = true;
+//              if (FarmaVariables.vEconoFar_Matriz) {
+//                FarmaVariables.vCodUsuMatriz = FarmaVariables.vNuSecUsu;
+//                FarmaVariables.vClaveMatriz = clave; 
+//              } 
+//              dlgLogin.setIconImage(imageIcono.getImage());
+//              dlgLogin.setVisible(true);
+              /*** FIN    ARAVELLO 14/10/2019 ***/
+              
               if (!FarmaVariables.vAceptar) {
                   FarmaConnection.closeConnection();
                   salirSistema();
@@ -854,7 +885,7 @@ public class UtilityPtoVenta {
                                   dlgcambio.setVisible(true);
 
                                   if (FarmaVariables.vAceptar) {
-                                      FarmaVariables.dlgLogin = dlgLogin;
+                                      FarmaVariables.dlgLogin = null;
                                       recuperaStock();
                                       //INI ASOSA - 14/09/2015 - CTRLASIST
                                       boolean flagCA = UtilityControlAsistencia.determinarMarcacionGeneral(new Frame(),
@@ -880,7 +911,7 @@ public class UtilityPtoVenta {
                           dlgcambio.setVisible(true);
 
                           if (FarmaVariables.vAceptar) {
-                              FarmaVariables.dlgLogin = dlgLogin;
+                              FarmaVariables.dlgLogin = null;
                               recuperaStock();
                               //INI ASOSA - 14/09/2015 - CTRLASIST
                               boolean flagCA = UtilityControlAsistencia.determinarMarcacionGeneral(new Frame(),
@@ -894,7 +925,7 @@ public class UtilityPtoVenta {
                           }
 
                       } else {
-                          FarmaVariables.dlgLogin = dlgLogin;
+                          FarmaVariables.dlgLogin = null;
                           recuperaStock();
                           //INI ASOSA - 14/09/2015 - CTRLASIST
                           boolean flagCA = UtilityControlAsistencia.determinarMarcacionGeneral(new Frame(),
@@ -905,7 +936,7 @@ public class UtilityPtoVenta {
                           //FIN ASOSA - 24/09/2015 - CTRLASIST                        
                       }
                   } else { //CHUANES 29/04/2015 SOLUCIONA OPERADOR Y SOBRE PARCIAL
-                      FarmaVariables.dlgLogin = dlgLogin;
+                      FarmaVariables.dlgLogin = null;
                       recuperaStock();
 
                       //INI ASOSA - 14/09/2015 - CTRLASIST

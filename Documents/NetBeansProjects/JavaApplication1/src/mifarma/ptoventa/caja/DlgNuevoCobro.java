@@ -808,6 +808,27 @@ public class DlgNuevoCobro extends JDialog {
         } catch (SQLException f) {
         }
         //FIN JMONZALVE 24042019
+        
+        /*** INICIO ARAVELLO 07/10/2019 ***/
+        String totalAPagar = lblSolesTotalPagar.getText();
+        txtMontoPagado.setText(totalAPagar);
+        KeyEvent vKeyEventPressedF11 = new KeyEvent(
+                                        txtMontoPagado,
+                                        KeyEvent.KEY_PRESSED,
+                                        System.currentTimeMillis(),
+                                        0,
+                                        KeyEvent.VK_F11,
+                                        '\uffff');
+//        KeyEvent vKeyEventReleasedF11 = new KeyEvent(
+//                                        txtMontoPagado
+//                                        ,
+//                                        KeyEvent.KEY_RELEASED,
+//                                        System.currentTimeMillis(),
+//                                        0,
+//                                        KeyEvent.VK_F11,
+//                                        '\uffff');
+        txtMontoPagado_keyPressed(vKeyEventPressedF11);
+        /*** FIN    ARAVELLO 07/10/2019 ***/
     }
 
     private void btnMonto_actionPerformed(ActionEvent e) {
@@ -1524,12 +1545,11 @@ public class DlgNuevoCobro extends JDialog {
                 indCerrarPantallaCobrarPed) {
 
                 if (validaIngresoSobre()) {
-
-                    if (JConfirmDialog.rptaConfirmDialog(this,
-                                                         "Ha excedido el importe máximo de dinero en su caja. \n" +
-                            "Desea hacer entrega de un nuevo sobre?\n")) {
-                        mostrarIngresoSobres();
-                    }
+//                    if (JConfirmDialog.rptaConfirmDialog(this,
+//                                                         "Ha excedido el importe máximo de dinero en su caja. \n" +
+//                            "Desea hacer entrega de un nuevo sobre?\n")) {
+//                        mostrarIngresoSobres();
+//                    }
                 }
                 cerrarVentana(true, pDialogo);
             }

@@ -5,12 +5,15 @@ import com.gs.mifarma.componentes.JButtonLabel;
 import com.gs.mifarma.componentes.JLabelFunction;
 import com.gs.mifarma.componentes.JLabelWhite;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -234,6 +237,18 @@ public class DlgMotivoAnularPedido extends JDialog {
             if (!VariablesCaja.vDescripImpr.equalsIgnoreCase("X") || VariablesCaja.vDescripImpr.equalsIgnoreCase(""))
                 lblMensaje.setText("Recoger comprobante en : " + VariablesCaja.vDescripImpr);
         }
+        /*** INICIO ARAVELLO 23/09/2019 ***/
+        try {
+            String motivo = "Devolución total";
+            String descripcion = VariablesRefacturadorElectronico.vComprobanteActual.getMotivoAnulacion();
+            cmbTipoMotivo.getModel().setSelectedItem(motivo);
+            txtMotivo.setText(descripcion);
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_F11);
+        } catch (Throwable ex) {
+            log.error("error en el robot F11");
+        }
+        /*** FIN    ARAVELLO 23/09/2019 ***/
     }
 
     private void this_windowClosing(WindowEvent e) {

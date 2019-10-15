@@ -11,6 +11,8 @@ import com.gs.mifarma.componentes.JPanelHeader;
 import com.gs.mifarma.componentes.JPanelTitle;
 import com.gs.mifarma.componentes.JPanelWhite;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import farmapuntos.bean.BeanTarjeta;
 
 import java.awt.BorderLayout;
@@ -21,6 +23,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -705,11 +708,12 @@ public class DlgListaProductos extends JDialog {
         lblIndTipoProd.setFont(new Font("SansSerif", 1, 12));
         lblF5.setBounds(new Rectangle(15, 515, 135, 20));
         lblF5.setText("[ F5 ] Pack");
-        lblF5.addKeyListener(new KeyAdapter() {
+        KeyAdapter keyAdapterlblF5 = new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 lblF5_keyPressed(e);
             }
-        });
+        };
+        lblF5.addKeyListener(keyAdapterlblF5);
         lblProdProm.setBounds(new Rectangle(240, 0, 220, 20));
         lblProdProm.setFont(new Font("SansSerif", 1, 11));
         lblProdProm.setText("PRODUCTO EN PACK");
@@ -1108,6 +1112,10 @@ public class DlgListaProductos extends JDialog {
         /**
          * NO TOCAR , REVISAR CON EL ENCARGADO ES DELICADO DEBIDO AL LLAMADO DEL RESUMEN DE PEDIDO
          */
+
+
+
+
         if (VariablesVentas.vKeyPress != null) {
             if (VariablesVentas.vCodBarra.trim().length() > 0) {
                 txtProducto.setText(VariablesVentas.vCodBarra.trim());
@@ -1181,6 +1189,54 @@ public class DlgListaProductos extends JDialog {
             cancelaOperacion();
             cerrarVentana(true);
         }
+        /*** INICIO ARAVELLO 04/10/2019 ***/
+        
+        if(VariablesRefacturadorElectronico.vComprobanteActual != null && 
+           VariablesRefacturadorElectronico.vComprobanteActual.isMotivoConvenio()){
+            KeyEvent vKeyEventPressedF3 = new KeyEvent(
+                                            txtProducto,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_F3,
+                                            '\uffff');
+            KeyEvent vKeyEventReleasedF3 = new KeyEvent(
+                                            txtProducto,
+                                            KeyEvent.KEY_RELEASED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_F3,
+                                            '\uffff');
+
+            txtProducto_keyPressed(vKeyEventPressedF3);
+            txtProducto_keyReleased(vKeyEventReleasedF3);
+            
+            KeyEvent vKeyEventPressedESC = new KeyEvent(
+                                            txtProducto,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_ESCAPE,
+                                            '\u001b');
+            KeyEvent vKeyEventTypedESC = new KeyEvent(
+                                            txtProducto,
+                                            KeyEvent.KEY_TYPED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            0,
+                                            '\u001b');
+            KeyEvent vKeyEventReleasedESC = new KeyEvent(
+                                            txtProducto,
+                                            KeyEvent.KEY_RELEASED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_ESCAPE,
+                                            '\u001b');
+            txtProducto_keyPressed(vKeyEventPressedESC);
+            txtProducto_keyTyped(vKeyEventTypedESC);
+            txtProducto_keyReleased(vKeyEventReleasedESC);
+        }        
+        /*** FIN    ARAVELLO 04/10/2019 ***/
         // dubilluz 30.07.2019        
     }
 
@@ -1646,7 +1702,7 @@ public class DlgListaProductos extends JDialog {
                                         "no deben haber productos seleccionados. Verifique!!!", txtProducto);
                             } else {
                                 DlgListaConveniosBTLMF convenio = new DlgListaConveniosBTLMF(myParentFrame);
-                                convenio.irIngresoDatosConvenio2(txtProducto);
+//                                convenio.irIngresoDatosConvenio2(txtProducto);
 
                                 if (VariablesConvenioBTLMF.vAceptar) {
                                     VariablesConvenioBTLMF.vHayDatosIngresadosConvenioBTLMF = true;
@@ -2031,7 +2087,6 @@ public class DlgListaProductos extends JDialog {
                         VariablesVentas.vPosOld = VariablesVentas.vPosNew;
                     }
                 }
-
                 /*muestraNombreLab(4, lblDescLab_Prod);
       muestraProductoInafectoIgv(11, lblProdIgv);
       muestraProductoRefrigerado(15,lblProdRefrig);
@@ -2136,7 +2191,9 @@ public class DlgListaProductos extends JDialog {
                     if ((auxStk + auxStkFrac) > 0 ||
                         (UtilityVentas.validaStockDisponible(stkProd) && !VariablesVentas.vIndProdVirtual.equalsIgnoreCase(FarmaConstants.INDICADOR_S))) {
                         //if (validaVentaConMenos()) {
-                        mostrarTratamiento();
+                        /*** INICIO ARAVELLO 01/10/2019 ***/
+                        //mostrarTratamiento();
+                        /*** FIN    ARAVELLO 01/10/2019 ***/
                         aceptaOperacion();
                         //}
                     }
@@ -2440,7 +2497,12 @@ public class DlgListaProductos extends JDialog {
                             }
                             //ERIOS 18.02.2016 Verifica funcionalidad de convenios.
                             if (UtilityConvenioBTLMF.esActivoConvenioBTLMF(this, null) && !pIngresoComprobanteManual) {
-                               cargarConvenioBTL();
+                                try{
+                                    cargarConvenioBTL();                       
+                                }catch(Throwable ex){
+                                    log.error("",ex);
+                                }
+
                             } /*else if (UtilityConvenioSITEDS.esActivoConvenioSITEDS(this, null)) {
         
                                 DlgMain principal = new DlgMain(myParentFrame, "Convenios Variable", true);
@@ -2717,9 +2779,12 @@ public class DlgListaProductos extends JDialog {
         boolean flagContinua = true; 
         
         //ERIOS 09.01.2015 Mostrar pantalla garantizados.
-        if(flagContinua && mostrarPantallaGarantizado()){
+        /*** INICIO ARAVELLO 01/10/2019 ***/
+        if(flagContinua && 
+           mostrarPantallaGarantizado()){
             return;
         }
+        /*** FIN    ARAVELLO 01/10/2019 ***/
         int vFila = myJTable.getSelectedRow();
         
         flagContinua = UtilityVentas.validaVentaConMenos(this, myParentFrame, myJTable, txtProducto, pIngresoComprobanteManual);
@@ -4138,7 +4203,7 @@ public class DlgListaProductos extends JDialog {
 
 
     //ini Agregado FRC
-    private void cargarConvenioBTL() {
+    private void cargarConvenioBTL() throws Throwable{
 
         log.debug("-Exe F3 Convenio Nuevo MF - BTL -");
         if(UtilityPuntos.isBloqueaVtaConvenio()){
@@ -4190,10 +4255,23 @@ public class DlgListaProductos extends JDialog {
 
             } else {
                 log.debug("-Ejecutando F3 VTA CONVENIO BTLMFARMA-");
-                DlgListaConveniosBTLMF loginDlg = new DlgListaConveniosBTLMF(myParentFrame, "", true);
-                loginDlg.setVisible(true);
-                log.debug("Cerramos Convenios" + VariablesConvenioBTLMF.vAceptar + "-" +
-                          VariablesConvenioBTLMF.vHayDatosIngresadosConvenioBTLMF);
+                /*** INICIO ARAVELLO 11/10/2019 ***/
+                
+                
+                DlgListaConveniosBTLMF.iniciarVariablesGlobales();
+//                VariablesConvenioBTLMF.vValorSelCopago = 80;
+//                VariablesConvenio.vPorcCoPago = String.valueOf(VariablesConvenioBTLMF.vValorSelCopago);
+                DlgListaConveniosBTLMF.guardaRegistroConvenio(this, myParentFrame);
+                VariablesConvenioBTLMF.vCodCliente = VariablesRefacturadorElectronico.vComprobanteActual.getCodCliente();
+                VariablesConvenioBTLMF.vNomCliente = VariablesRefacturadorElectronico.vComprobanteActual.getNomCliente();
+                FarmaVariables.vAceptar = true;
+                VariablesConvenioBTLMF.vAceptar = true;
+                //            cargaPantallaCopago();
+                /*** FIN    ARAVELLO 11/10/2019 ***/
+//                DlgListaConveniosBTLMF loginDlg = new DlgListaConveniosBTLMF(myParentFrame, "", true);
+//                loginDlg.setVisible(true);
+//                log.debug("Cerramos Convenios" + VariablesConvenioBTLMF.vAceptar + "-" +
+//                          VariablesConvenioBTLMF.vHayDatosIngresadosConvenioBTLMF);
 
                 if (VariablesConvenioBTLMF.vAceptar) {
 

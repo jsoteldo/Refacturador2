@@ -78,7 +78,12 @@ public class MainFarmaVenta extends ReadProperties {
                 
             }
             else {
-                UtilityPtoVenta.muestraLogin(pCadena);
+                try{
+                    UtilityPtoVenta.muestraLogin(pCadena);
+                }catch(Throwable ex){
+                    log.error("",ex);
+                }
+
                 //String indMenu="S";
                 //String indMenu="N";
                 String indMenu=UtilMenu.Recupera_IndicadorMenu();

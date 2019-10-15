@@ -1,6 +1,10 @@
 package mifarma.ptoventa.caja.reference;
 
 
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import farmapuntos.orbis.WSClientConstans;
 
 import java.awt.Frame;
@@ -1779,10 +1783,12 @@ public class UtilityCaja {
                                                  + "\n" + msgVouPtos,   //ASOSA - 24/02/2015 - 
                                                  pObjectFocus);
                     } else {
-                        FarmaUtility.showMessage(pJDialog, "Pedido Cobrado con éxito. \n" +
-                                "Comprobantes Impresos con éxito " + mensCons
-                                                 + "\n" + msgVouPtos,   //ASOSA - 24/02/2015 - 
-                                                                         pObjectFocus);
+                        /*** INICIO ARAVELLO 10/10/2019 ***///Comentado
+//                        FarmaUtility.showMessage(pJDialog, "Pedido Cobrado con éxito. \n" +
+//                                "Comprobantes Impresos con éxito " + mensCons
+//                                                 + "\n" + msgVouPtos,   //ASOSA - 24/02/2015 - 
+//                                                                         pObjectFocus);
+                        /*** FIN    ARAVELLO 10/10/2019 ***/
                     }
                 } else {
                     if (cantidadCupones > 0) {
@@ -3236,7 +3242,9 @@ public class UtilityCaja {
         ArrayList listaCuponesUsados = new ArrayList();
         int COL_COD_CUPON = 0;
         try {
-            VariablesCaja.vIndLinea =
+
+
+             VariablesCaja.vIndLinea =
                     FarmaUtility.getIndLineaOnLine(FarmaConstants.CONECTION_MATRIZ, FarmaConstants.INDICADOR_N);
 
             if (VariablesCaja.vIndLinea.trim().equalsIgnoreCase(FarmaConstants.INDICADOR_S)) {

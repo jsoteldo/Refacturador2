@@ -382,7 +382,6 @@ public class UtilityEposCnx {
     public void procesarComprobanteEnEPOS(String pNroComprobanteFV)throws Exception{
         /** 1. Envia trama de CP al EPOS. **/
         enviarCompPagoAEPOS();
-        
         /** 2. valida que EPOS funcione o recepcione el nro del FV **/
         if(!pNroComprobanteFV.equalsIgnoreCase(getNroComprobanteEPOS()))
             throw new Exception("El Número de Comprobante electrónico : " + pNroComprobanteFV +"\n" +

@@ -3,6 +3,8 @@ package mifarma.ptoventa.convenioBTLMF;
 
 import com.gs.mifarma.componentes.JLabelFunction;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -319,13 +321,13 @@ public class DlgDatosConvenioBTLMF extends JDialog {
     }
 
 
-    private void initialize() {
+    public static void initialize() {
         VariablesConvenioBTLMF.vPaginaActual = 0;
         VariablesConvenioBTLMF.vDatosConvenioIngresar = new ArrayList();
         VariablesConvenioBTLMF.vDatosConvenio = new ArrayList();
 
         VariablesConvenioBTLMF.vDatosConvenio =
-                UtilityConvenioBTLMF.listaDatosConvenio(VariablesConvenioBTLMF.vCodConvenio, this, pnlObjetoIngreso);
+                UtilityConvenioBTLMF.listaDatosConvenio(VariablesConvenioBTLMF.vCodConvenio);
         if (VariablesConvenioBTLMF.vDatosConvenio != null) {
             Map convenio;
             String pCreaObjeto = "", pEditable = "";
@@ -340,8 +342,20 @@ public class DlgDatosConvenioBTLMF extends JDialog {
                 }
 
             }
-            pagFinal = VariablesConvenioBTLMF.vDatosConvenioIngresar.size();
-
+            //pagFinal = VariablesConvenioBTLMF.vDatosConvenioIngresar.size();
+            VariablesConvenioBTLMF.vDatosConvenioIngresar.size();
+            for (Map vMap: VariablesConvenioBTLMF.vDatosConvenio) {
+                String vMapCodCampo = (String) vMap.get(ConstantsConvenioBTLMF.COL_CODIGO_CAMPO);
+                for(ArrayList vRow: VariablesRefacturadorElectronico.vComprobanteActual.getDatosConvenio()){
+                    String vCodCampo = (String) vRow.get(0);
+                    if(vMapCodCampo.equalsIgnoreCase(vCodCampo)){
+                        String vDescripcion = (String) vRow.get(1);
+                        vMap.put(ConstantsConvenioBTLMF.COL_VALOR_IN, vDescripcion.trim());
+                        break;
+                    }
+                    
+                }
+            }
         }
     }
 

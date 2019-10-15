@@ -12,6 +12,9 @@ import com.gs.mifarma.componentes.JPanelHeader;
 import com.gs.mifarma.componentes.JPanelTitle;
 import com.gs.mifarma.componentes.JTextFieldSanSerif;
 
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import farmapuntos.bean.BeanTarjeta;
 
 import farmapuntos.orbis.WSClientConstans;
@@ -24,6 +27,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor; // JHAMRC 10072019
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -640,16 +644,18 @@ public class DlgResumenPedido extends JDialog {
                 txtDescProdOculto_keyTyped(e);
             }
         });
-        txtDescProdOculto.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                txtDescProdOculto_actionPerformed(e);
-            }
-        });
-        txtDescProdOculto.addFocusListener(new FocusAdapter() {
-            public void focusLost(FocusEvent e) {
-                txtDescProdOculto_focusLost(e);
-            }
-        });
+        /*** INICIO ARAVELLO 01/10/2019 ***/ //Comentado
+//        txtDescProdOculto.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                txtDescProdOculto_actionPerformed(e);
+//            }
+//        });
+//        txtDescProdOculto.addFocusListener(new FocusAdapter() {
+//            public void focusLost(FocusEvent e) {
+//                txtDescProdOculto_focusLost(e);
+//            }
+//        });
+        /*** FIN    ARAVELLO 01/10/2019 ***/
         lblProdOculto_T.setText("Producto:");
         lblProdOculto_T.setBounds(new Rectangle(5, 5, 60, 20));
         lblF6.setText("<HTML><CENTER>[F6]<BR>Promociones</CENTER></HTML>");
@@ -1251,9 +1257,9 @@ public class DlgResumenPedido extends JDialog {
             new DlgLogin(myParentFrame, ConstantsPtoVenta.MENSAJE_LOGIN, true);
         dlgLogin.setRolUsuario(FarmaConstants.ROL_VENDEDOR);
         dlgLogin.setVisible(true);*/
-
+        /*** INICIO ARAVELLO 23/09/2019 ***/
         FarmaVariables.vAceptar = true;
-
+        /*** FIN    ARAVELLO 23/09/2019 ***/
         if (FarmaVariables.vAceptar) {
             log.info("******* JCORTEZ *********");
             if (UtilityCaja.existeIpImpresora(this, null)) {
@@ -1270,10 +1276,13 @@ public class DlgResumenPedido extends JDialog {
                     log.info("******* 2 *********");
                     log.info("Usuario: " + FarmaVariables.vIdUsu);
                     muestraMensajeUsuario();
-                    FarmaVariables.vAceptar = false;
+                    /*** INICIO ARAVELLO 23/09/2019 ***/ //Se comentaron lineas
+                    //FarmaVariables.vAceptar = false;
 
                     //agregarProducto();
-                    agregarProducto(null); //ASOSA - 10/10/2014 - PANHD
+                    //agregarProducto(null); //ASOSA - 10/10/2014 - PANHD
+                    /*** FIN    ARAVELLO 23/09/2019 ***/
+
                 }
             } else {
                 //no se genera venta sin impresora asignada (Boleta/ Ticket)
@@ -1374,6 +1383,105 @@ public class DlgResumenPedido extends JDialog {
                 FrmEconoFar.obtieneIndRegistroVentaRestringida();
             }
         }
+        /*** INICIO ARAVELLO 23/09/2019 ***/
+        if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+            if(VariablesRefacturadorElectronico.vComprobanteActual.isConvenio()){
+                KeyEvent vKeyEventPressedF3 = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_PRESSED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_F3,
+                                                '\uffff');
+                KeyEvent vKeyEventReleasedF3 = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_RELEASED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_F3,
+                                                '\uffff');
+                VariablesRefacturadorElectronico.vComprobanteActual.setMotivoConvenio(true);
+                txtDescProdOculto_keyPressed(vKeyEventPressedF3);
+                txtDescProdOculto_keyReleased(vKeyEventReleasedF3);
+                VariablesRefacturadorElectronico.vComprobanteActual.setMotivoConvenio(false);
+            }else if(VariablesRefacturadorElectronico.vComprobanteActual.isFidelizado()){
+                KeyEvent vKeyEventPressedF12 = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_PRESSED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_F12,
+                                                '\uffff');
+                KeyEvent vKeyEventReleasedF12 = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_RELEASED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_F12,
+                                                '\uffff');
+                txtDescProdOculto_keyPressed(vKeyEventPressedF12);
+                txtDescProdOculto_keyReleased(vKeyEventReleasedF12);  
+            }
+            ArrayList vComprobanteDetalle = (ArrayList)VariablesRefacturadorElectronico.vComprobanteActual.getDetallePedido();
+            for (Object vItem : vComprobanteDetalle) {
+                VariablesRefacturadorElectronico.vItemActual = (ArrayList)vItem;
+                String vCodProd = (String)VariablesRefacturadorElectronico.vItemActual.get(0);
+                txtDescProdOculto.setText(vCodProd);
+                
+                KeyEvent vKeyEventPressed = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_PRESSED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_ENTER,
+                                               '\n');
+                KeyEvent vKeyEventTyped = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_TYPED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_UNDEFINED,
+                                               '\n');
+                KeyEvent vKeyEventReleased = new KeyEvent(
+                                                txtDescProdOculto,
+                                                KeyEvent.KEY_RELEASED,
+                                                System.currentTimeMillis(),
+                                                0,
+                                                KeyEvent.VK_ENTER,
+                                               '\n');
+                txtDescProdOculto_keyPressed(vKeyEventPressed);
+                txtDescProdOculto_keyTyped(vKeyEventTyped);
+                txtDescProdOculto_keyReleased(vKeyEventReleased);
+            }
+            //        String vTipComp = (String)VariablesRefacturadorElectronico.vComprobanteActual.get(0);
+            String vTipComp = (String) VariablesRefacturadorElectronico.vComprobanteActual.getCabComprobante().get(0);
+            int vVK = KeyEvent.VK_F4;
+            char vChar = '\uffff';
+            if (vTipComp.equals("FACTURA") && !VariablesRefacturadorElectronico.vComprobanteActual.isConvenio()) {
+                vVK = KeyEvent.VK_F4;
+                vChar = '\uffff';
+            } else if (vTipComp.equals("BOLETA") || VariablesRefacturadorElectronico.vComprobanteActual.isConvenio()) {
+                vVK = KeyEvent.VK_F1;
+                vChar = '\uffff';
+            }
+            KeyEvent vKeyEventPressed = new KeyEvent(
+                                            txtDescProdOculto,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            vVK,
+                                            vChar);
+            KeyEvent vKeyEventReleased = new KeyEvent(
+                                            txtDescProdOculto,
+                                            KeyEvent.KEY_RELEASED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            vVK,
+                                            vChar);
+            txtDescProdOculto_keyPressed(vKeyEventPressed);
+            txtDescProdOculto_keyReleased(vKeyEventReleased);
+        }
+        /*** FIN    ARAVELLO 23/09/2019 ***/
     }
 
     private void tblProductos_keyPressed(KeyEvent e) {
@@ -3287,6 +3395,10 @@ public class DlgResumenPedido extends JDialog {
                     grabarDetalle_02(pTipComp, array, cont, ConstantsVentas.IND_PROD_PROM);
                 }
 
+                /*** INICIO ARAVELLO 30/09/2019 ***/
+                //Grabar datos de pedido de venta
+                /*** FIN    ARAVELLO 30/09/2019 ***/
+
                 for (int i = 0; i < VariablesVentas.vArrayList_Promociones.size(); i++) {
                     array = ((ArrayList)VariablesVentas.vArrayList_Promociones.get(i));
                     int cantidad =
@@ -3311,7 +3423,6 @@ public class DlgResumenPedido extends JDialog {
                     DBConv_Responsabilidad.guardarListCobroResponsabilidad(codTrabajador, datTrabajador, codMotivo, motRegularizacion, importeTrabajador);
                 }
                 //FIN JMONZALVE 24042019
-
                 //Se procedera a ver si se puede o no acceder a un producto de regalo por el encarte.
                 cont++;
                 VariablesVentas.vIndVolverListaProductos = false;
@@ -3509,18 +3620,19 @@ public class DlgResumenPedido extends JDialog {
                 }
 
                 //actualizando los descto aplicados por cada productos en el detalle del pedido
-                Map mapaDctoProd = new HashMap();
-                for (int mm = 0; mm < VariablesVentas.vListDctoAplicados.size(); mm++) {
-                    mapaDctoProd = (Map)VariablesVentas.vListDctoAplicados.get(mm);
-
-                    DBVentas.guardaDctosDetPedVta(mapaDctoProd.get("COD_PROD").toString(),
-                                                  mapaDctoProd.get("COD_CAMP_CUPON").toString(),
-                                                  mapaDctoProd.get("VALOR_CUPON").toString(),
-                                                  mapaDctoProd.get("AHORRO").toString(),
-                                                  mapaDctoProd.get("DCTO_AHORRO").toString(),
-                                                  mapaDctoProd.get("SEC_PED_VTA_DET").toString()); //JMIRANDA 30.10.09 ENVIA SEC_DET_
-                }
-
+                /*** INICIO ARAVELLO 30/09/2019 ***///Comentar
+//                Map mapaDctoProd = new HashMap();
+//                for (int mm = 0; mm < VariablesVentas.vListDctoAplicados.size(); mm++) {
+//                    mapaDctoProd = (Map)VariablesVentas.vListDctoAplicados.get(mm);
+//
+//                    DBVentas.guardaDctosDetPedVta(mapaDctoProd.get("COD_PROD").toString(),
+//                                                  mapaDctoProd.get("COD_CAMP_CUPON").toString(),
+//                                                  mapaDctoProd.get("VALOR_CUPON").toString(),
+//                                                  mapaDctoProd.get("AHORRO").toString(),
+//                                                  mapaDctoProd.get("DCTO_AHORRO").toString(),
+//                                                  mapaDctoProd.get("SEC_PED_VTA_DET").toString()); //JMIRANDA 30.10.09 ENVIA SEC_DET_
+//                }
+                /*** FIN    ARAVELLO 30/09/2019 ***/
                 if (VariablesVentas.vSeleccionaMedico) {
                     DBVentas.agrega_medico_vta();
                 }
@@ -3558,7 +3670,18 @@ public class DlgResumenPedido extends JDialog {
                 //FIN LLEIVA
 
                 FarmaUtility.aceptarTransaccion();
-
+                try{
+                    if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+                        VariablesRefacturadorElectronico.vComprobanteActual.setNumPedidoVentaNew(VariablesVentas.vNum_Ped_Vta);
+                        DBRefacturadorElectronico.actualizacionPedidoVenta(
+                                                                            VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                                            VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal(),
+                                                                            VariablesRefacturadorElectronico.vComprobanteActual.getNumPedidoVentaNew()
+                                                                            ); 
+                    }
+                }catch(Throwable ex){
+                    log.error("",ex);
+                }
                 //ERIOS 03.09.2013 Determina registro de productos restringidos
                 if (VariablesPtoVenta.vIndRegistroVentaRestringida) {
                     boolean isVtaPsicotropico = UtilityVentas.getVentaRestringida(VariablesVentas.vNum_Ped_Vta);
@@ -5444,22 +5567,24 @@ public class DlgResumenPedido extends JDialog {
         // dubilluz 14.10.2014
         
         //Agregado por FRAMIREZ 11.02.2012 Flag Para Mostrar productos complementarios para un convenio
-        if (UtilityConvenioBTLMF.esActivoConvenioBTLMF(this, null) &&
-            VariablesConvenioBTLMF.vHayDatosIngresadosConvenioBTLMF) {
-            if (VariablesConvenioBTLMF.vIndVtaComplentaria.equals("S")) {
-                DlgComplementarios1 dlgcomplementarios = new DlgComplementarios1(myParentFrame, "", true, pIngresoComprobanteManual);
-                dlgcomplementarios.setVisible(true);
-            } else {
-                FarmaVariables.vAceptar = false;
-            }
-        } else {
-            if (mostrarComplementarios) {
-                DlgComplementarios1 dlgcomplementarios = new DlgComplementarios1(myParentFrame, "", true, pIngresoComprobanteManual);
-                dlgcomplementarios.setVisible(true);
-            } else {
-                FarmaVariables.vAceptar = false;
-            }
-        }
+        /*** INICIO ARAVELLO 01/10/2019 ***///comentar
+//        if (UtilityConvenioBTLMF.esActivoConvenioBTLMF(this, null) &&
+//            VariablesConvenioBTLMF.vHayDatosIngresadosConvenioBTLMF) {
+//            if (VariablesConvenioBTLMF.vIndVtaComplentaria.equals("S")) {
+//                DlgComplementarios1 dlgcomplementarios = new DlgComplementarios1(myParentFrame, "", true, pIngresoComprobanteManual);
+//                dlgcomplementarios.setVisible(true);
+//            } else {
+//                FarmaVariables.vAceptar = false;
+//            }
+//        } else {
+//            if (mostrarComplementarios) {
+//                DlgComplementarios1 dlgcomplementarios = new DlgComplementarios1(myParentFrame, "", true, pIngresoComprobanteManual);
+//                dlgcomplementarios.setVisible(true);
+//            } else {
+//                FarmaVariables.vAceptar = false;
+//            }
+//        }
+        /*** FIN    ARAVELLO 01/10/2019 ***/
         
         if (FarmaVariables.vAceptar) {
             VariablesVentas.vCodFiltro = ""; //JCORTEZ 25/04/08
@@ -9934,16 +10059,16 @@ imprime(cad1);
         String vkF = "";
         boolean indExisteConv = false;
         boolean indMontoValido = false;
-        
+        /*** INICIO ARAVELLO 01/10/2019 ***///Comentado
 		// INICIO : JHAMRC 10072019
-        if(validaMostrarISCBolsas()){
-            mostrarISCBolsas("");
-            
-            if(!FarmaVariables.vAceptar)
-                return;
-        }
+//        if(validaMostrarISCBolsas()){
+//            mostrarISCBolsas("");
+//            
+//            if(!FarmaVariables.vAceptar)
+//                return;
+//        }
 		// FIN: JHAMRC 10072019
-		
+        /*** FIN    ARAVELLO 01/10/2019 ***/		
         if (pedidoEnProceso) {
             return;
         }
@@ -10448,17 +10573,19 @@ imprime(cad1);
 
         //dubilluz
         //22.10.2014
-        if (!UtilityPtoVenta.getIndLoginCajUnicaVez()) {
-            // KMONCADA 2015.03.19
-            //if(!actuaRobot){
-                DlgLogin dlgLogin = new DlgLogin(myParentFrame, ConstantsPtoVenta.MENSAJE_LOGIN, true);
-                dlgLogin.setRolUsuario(FarmaConstants.ROL_VENDEDOR);
-                dlgLogin.setVisible(true);
-            /*}else{
-                FarmaVariables.vAceptar = true;
-            }*/
-        } else
-            FarmaVariables.vAceptar = true;
+        /*** INICIO ARAVELLO 30/09/2019 ***/ //Comentado
+//        if (!UtilityPtoVenta.getIndLoginCajUnicaVez()) {
+//            // KMONCADA 2015.03.19
+//            //if(!actuaRobot){
+//                DlgLogin dlgLogin = new DlgLogin(myParentFrame, ConstantsPtoVenta.MENSAJE_LOGIN, true);
+//                dlgLogin.setRolUsuario(FarmaConstants.ROL_VENDEDOR);
+//                dlgLogin.setVisible(true);
+//            /*}else{
+//                FarmaVariables.vAceptar = true;
+//            }*/
+//        } else
+        /*** FIN    ARAVELLO 30/09/2019 ***/
+        FarmaVariables.vAceptar = true;
 
         if (FarmaVariables.vAceptar) {
 

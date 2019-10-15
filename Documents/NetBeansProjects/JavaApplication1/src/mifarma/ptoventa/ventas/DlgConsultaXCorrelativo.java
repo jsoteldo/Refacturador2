@@ -7,12 +7,19 @@ import com.gs.mifarma.componentes.JPanelTitle;
 import com.gs.mifarma.componentes.JPanelWhite;
 import com.gs.mifarma.componentes.JTextFieldSanSerif;
 
+import farmaciasperuanas.model.BeanVenta;
+
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -253,6 +260,37 @@ public class DlgConsultaXCorrelativo extends JDialog {
     private void this_windowOpened(WindowEvent e) {
         FarmaUtility.centrarVentana(this);
         FarmaUtility.moveFocus(cmbTipoComp);
+        /*** INICIO ARAVELLO 23/09/2019 ***/
+        try{
+            if(VariablesRefacturadorElectronico.vComprobanteActual!=null){
+                String vCodGrupoCia = VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia();
+                String vCodLocal = VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal();
+                //String vNumPedVentaOld = VariablesRefacturadorElectronico.vComprobanteActual.getNumPedidoVentaOld();
+                String vCompPagoE = VariablesRefacturadorElectronico.vComprobanteActual.getNumCompPagoE();
+                ArrayList vListComprobantes = DBRefacturadorElectronico.consultaComprobante(vCodGrupoCia, vCodLocal, vCompPagoE);
+                ArrayList vComprobante = (ArrayList) vListComprobantes.get(0);
+                String vTipComp = (String) vComprobante.get(0);
+                String vNroComprobante = (String) vComprobante.get(1); 
+                String vNroCompSerie = vNroComprobante.substring(0,4);
+                String vNroCompCorrelativo = vNroComprobante.substring(4,vNroComprobante.length());
+                String vMonto = (String) vComprobante.get(2);
+                String vFecha = (String) vComprobante.get(3);
+                
+                cmbTipoComp.getModel().setSelectedItem(vTipComp);
+                txtSerie.setText(vNroCompSerie);
+                txtNroComprobante.setText(vNroCompCorrelativo);
+                txtMonto.setText(vMonto);
+                txtFecha.setText(vFecha);
+                Robot robot = new Robot();
+                robot.keyPress(KeyEvent.VK_F11);
+            }else{
+                throw new Exception("Los datos del comprobante no cargaron de manera correcta");
+            } 
+        }catch(Throwable ex){
+            log.error("ERROR EN REFACTURADOR "+ VariablesRefacturadorElectronico.vComprobanteActual ,ex);
+        }
+
+        /*** FIN    ARAVELLO 23/09/2019 ***/
     }
 
     private void chkKeyPressed(KeyEvent e) {

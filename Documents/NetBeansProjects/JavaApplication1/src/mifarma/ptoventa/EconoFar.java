@@ -3,6 +3,12 @@ package mifarma.ptoventa;
 
 import com.gs.encripta.FarmaEncripta;
 
+import farmaciasperuanas.model.BeanVenta;
+
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
+import java.util.ArrayList;
+
 import mifarma.ptoventa.main.EconoFar_Matriz;
 import mifarma.ptoventa.main.MainFarmaVenta;
 
@@ -32,6 +38,22 @@ public class EconoFar {
     static private final Logger log = LoggerFactory.getLogger(EconoFar.class);
 
     public static void main(String[] args) {
+        BeanVenta vBeanVenta = new BeanVenta();
+        vBeanVenta.setCodGrupoCia("001");
+        vBeanVenta.setCodLocal("071");
+//        vBeanVenta.setNumCompPagoE("F07101343158");
+        vBeanVenta.setNumCompPagoE("B07104167334");
+        vBeanVenta.setMotivoAnulacion("Comprobante rechazado por SUNAT");
+        vBeanVenta.setCompleto(false);
+//        BeanVenta vBeanVenta2 = new BeanVenta();
+//        vBeanVenta2.setCodGrupoCia("001");
+//        vBeanVenta2.setCodLocal("071");
+//        vBeanVenta2.setNumCompPagoE("F07101342093");
+//        vBeanVenta2.setMotivoAnulacion("Comprobante rechazado por SUNAT");
+//        vBeanVenta2.setCompleto(false);
+        VariablesRefacturadorElectronico.vListComprobantes.add(vBeanVenta);
+        VariablesRefacturadorElectronico.vComprobanteActual = VariablesRefacturadorElectronico.vListComprobantes.get(0);
+//        VariablesRefacturadorElectronico.vListComprobantes.add(vBeanVenta2);
       //  String pValor  = FarmaEncripta.desencripta("amxwXzAwMF8xeDM=");        
       //  System.out.println(pValor);
 

@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -243,6 +244,12 @@ public class DlgDetalleAnularPedido extends JDialog {
         FarmaUtility.centrarVentana(this);
         FarmaUtility.moveFocus(btnListaUsuarioCaja);
         validaCajaOpen(); //ASOSA
+        try{
+           Robot robot = new Robot();
+           robot.keyPress(KeyEvent.VK_F11);
+        }catch(Throwable ex){
+            log.error("error en el robot F11");
+        }
     }
 
     private void this_windowClosing(WindowEvent e) {
@@ -367,8 +374,10 @@ public class DlgDetalleAnularPedido extends JDialog {
                                                         FarmaUtility.aceptarTransaccion();
                                                         trnxPuntos.imprimeVariables();
                                                         trnxPuntos.reset();
-                            }                            
-                            FarmaUtility.showMessage(this, "¡Anulación generada satisfactoriamente!", tblUsuariosCaja);
+                            }
+                            /*** INICIO ARAVELLO 23/09/2019 ***/ //Comentado
+                            //FarmaUtility.showMessage(this, "¡Anulación generada satisfactoriamente!", tblUsuariosCaja);
+                            /*** FIN    ARAVELLO 23/09/2019 ***/
                         }
                     } catch (Exception e) {
                         log.error("",e);

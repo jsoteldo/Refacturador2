@@ -4,12 +4,15 @@ package mifarma.ptoventa.caja;
 import com.gs.mifarma.componentes.JButtonLabel;
 import com.gs.mifarma.componentes.JLabelFunction;
 
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -387,6 +390,44 @@ public class DlgSeleccionTipoComprobante extends JDialog {
             }
         }
         colocaDatosFidelizado();
+        /*** INICIO ARAVELLO 07/10/2019 ***/
+        try{
+//            String vRUC = (String)VariablesRefacturadorElectronico.vComprobanteActual.get(5);
+            txtRazonSocial_Ruc.setText(VariablesRefacturadorElectronico.vComprobanteActual.getRuc());
+            KeyEvent vKeyEventPressedENTER = new KeyEvent(
+                                            txtRazonSocial_Ruc,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_ENTER,
+                                           '\n');
+//            KeyEvent vKeyEventTypedENTER = new KeyEvent(
+//                                            txtRazonSocial_Ruc,
+//                                            KeyEvent.KEY_TYPED,
+//                                            System.currentTimeMillis(),
+//                                            0,
+//                                            KeyEvent.VK_UNDEFINED,
+//                                           '\n');
+//            KeyEvent vKeyEventReleasedENTER = new KeyEvent(
+//                                            txtRazonSocial_Ruc,
+//                                            KeyEvent.KEY_RELEASED,
+//                                            System.currentTimeMillis(),
+//                                            0,
+//                                            KeyEvent.VK_ENTER,
+//                                           '\n');
+            KeyEvent vKeyEventPressedF11 = new KeyEvent(
+                                            txtRazonSocial_Ruc,
+                                            KeyEvent.KEY_PRESSED,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            KeyEvent.VK_F11,
+                                            '\uffff');
+            txtRazonSocial_keyPressed(vKeyEventPressedENTER);
+            txtRazonSocial_keyPressed(vKeyEventPressedF11);
+        }catch(Throwable ex){
+            log.error("",ex);
+        }
+        /*** FIN    ARAVELLO 07/10/2019 ***/
     }
 
     private void txtRazonSocial_keyPressed(KeyEvent e) {
@@ -596,8 +637,11 @@ public class DlgSeleccionTipoComprobante extends JDialog {
             VariablesCliente.vTipoDocumento = ConstantsVentas.TIPO_COMP_FACTURA;
             log.info("TIPO DE COMPROBANTE A ENTREGAR FACTURA");
         }
+        /*** INICIO ARAVELLO 01/10/2019 ***///Comentado
         DlgBuscaClienteJuridico dlgBuscaClienteJuridico = new DlgBuscaClienteJuridico(myParentFrame, "", true);
         dlgBuscaClienteJuridico.setVisible(true);
+        /*** FIN    ARAVELLO 01/10/2019 ***/
+        FarmaVariables.vAceptar = true;
         if (FarmaVariables.vAceptar) {
             if (VariablesCliente.vArrayList_Cliente_Juridico.size() == 1) {
                 VariablesVentas.vCod_Cli_Local =

@@ -84,7 +84,9 @@ public class UtilityConvenioBTLMF {
 
     }
 
-    public static boolean indDatoConvenio(String pCodigoConvenio, JDialog pDialogo, Object pObjeto) {
+    /*** INICIO ARAVELLO 11/10/2019 ***/
+
+    public static boolean indDatoConvenio(String pCodigoConvenio) {
         boolean resul = false;
         String indConv = "";
         String indProdConv = "";
@@ -118,26 +120,27 @@ public class UtilityConvenioBTLMF {
 
         } catch (SQLException sql) {
             log.error("", sql);
-            FarmaUtility.showMessage(pDialogo, "Error en buscar si debe mostrase datos convenios\n" +
-                    sql.getMessage(), pObjeto);
+//            FarmaUtility.showMessage(pDialogo, "Error en buscar si debe mostrase datos convenios\n" +
+//                    sql.getMessage(), pObjeto);
             resul = true;
         }
         return resul;
 
     }
-
-    public static List listaDatosConvenio(String pCodConvenio, JDialog pDialogo, Object pObjeto) {
+    /*** FIN    ARAVELLO 11/10/2019 ***/
+    /*** INICIO ARAVELLO 11/10/2019 ***/
+    public static List listaDatosConvenio(String pCodConvenio) {
         List lista = null;
         try {
             lista = DBConvenioBTLMF.listaDatosConvenio(pCodConvenio);
         } catch (SQLException sqlException) {
             log.error("", sqlException);
-            FarmaUtility.showMessage(pDialogo, "Error al obtener datos del convenio!!!", pObjeto);
+            //FarmaUtility.showMessage(pDialogo, "Error al obtener datos del convenio!!!", pObjeto);
         }
         log.debug("ListaDatConv" + lista);
         return lista;
     }
-
+    /*** FIN    ARAVELLO 11/10/2019 ***/
     public static Map obtienePantallaMensaje(String pNroResolucion, String pPosicion, JDialog pDialogo,
                                              Object pObjeto) {
         Map map = null;
@@ -474,6 +477,7 @@ public class UtilityConvenioBTLMF {
             log.debug("vCreacionCliente:::>" + VariablesConvenioBTLMF.vCreacionCliente);
         }
 
+
         return retorno;
     }
 
@@ -712,7 +716,7 @@ public class UtilityConvenioBTLMF {
             //rherrera 10.11.2014 actualiza estaod cobrado al final de imprimir comprobantes.
 
             boolean solicitaDatos =
-                UtilityConvenioBTLMF.indDatoConvenio(VariablesConvenioBTLMF.vCodConvenio, null, null);
+                UtilityConvenioBTLMF.indDatoConvenio(VariablesConvenioBTLMF.vCodConvenio);
             if (solicitaDatos && !listaDatosConvenioAdic(pJDialog, pObjectFocus)) {
                 FarmaUtility.liberarTransaccion();
                 FarmaUtility.showMessage(pJDialog,
@@ -2848,8 +2852,9 @@ public class UtilityConvenioBTLMF {
         return indConvenioBTLMF;
     }
 
+    /*** INICIO ARAVELLO 11/10/2019 ***/
 
-    public static boolean indCopagoConvenio(String pCodigoConvenio, JDialog pDialogo, Object pObjeto) {
+    public static boolean indCopagoConvenio(String pCodigoConvenio) {
         boolean resul = false;
         String indConv = "";
         String indProdConv = "";
@@ -2865,13 +2870,13 @@ public class UtilityConvenioBTLMF {
 
         } catch (SQLException sql) {
             log.error("", sql);
-            FarmaUtility.showMessage(pDialogo, "Error en buscar si debe mostrase datos convenios\n" +
-                    sql.getMessage(), pObjeto);
+//            FarmaUtility.showMessage(pDialogo, "Error en buscar si debe mostrase datos convenios\n" +
+//                    sql.getMessage(), pObjeto);
             resul = false;
         }
         return resul;
     }
-
+    /*** FIN    ARAVELLO 11/10/2019 ***/
     private static void imprimeFacturaFasa(JDialog pJDialog, ArrayList pDetalleComprobante, String pValTotalNeto,
                                            String pNumComprobante, String pValIgvComPago, String pValCopagoCompPago,
                                            String pValIgvComCoPago, String pNumCompCoPago, String pRuta, boolean bol,

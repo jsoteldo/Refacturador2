@@ -7,6 +7,10 @@ import com.gs.mifarma.componentes.JPanelHeader;
 import com.gs.mifarma.componentes.JPanelTitle;
 import com.gs.mifarma.componentes.JPanelWhite;
 
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -83,10 +87,10 @@ public class DlgListaConveniosBTLMF extends JDialog {
 
     // constantes de listado de convenios de clientes
     // 31.01.2008 dubilluz  creacion
-    private int COLUMN_COD_CONV_ = 0;
-    private int COLUMN_DESC_CONV = 1;
-    private int COLUMN_RELACIONADO_CONV = 2;
-    private int COLUMN_FLG_CREA_CLIEN_CONV = 3;
+    private static int COLUMN_COD_CONV_ = 0;
+    private static int COLUMN_DESC_CONV = 1;
+    private static int COLUMN_RELACIONADO_CONV = 2;
+    private static int COLUMN_FLG_CREA_CLIEN_CONV = 3;
 
 
     public DlgListaConveniosBTLMF() {
@@ -189,8 +193,6 @@ public class DlgListaConveniosBTLMF extends JDialog {
                                     0);
         FarmaUtility.initSimpleList(tblConvenios, tableModelListaconvenios,
                                     ConstantsConvenioBTLMF.columnsListaConvenios);
-
-
     }
 
     private void this_windowOpened(WindowEvent e) {
@@ -223,10 +225,10 @@ public class DlgListaConveniosBTLMF extends JDialog {
             log.debug("Texto Ingresado   :" + descripcionTemp.trim());
 
             iniciarVariablesGlobales();
-            guardaRegistroConvenio();
+//            guardaRegistroConvenio();
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (UtilityConvenioBTLMF.esTarjetaConvenio(txtNombreConvenio.getText())) {
-                irIngresoDatosConvenio(txtNombreConvenio);
+//                irIngresoDatosConvenio(txtNombreConvenio);
             } else {
                 busquaConvenio(e);
             }
@@ -377,15 +379,18 @@ public class DlgListaConveniosBTLMF extends JDialog {
                                      txtNombreConvenio);
         }
     }
-
-    private void guardaRegistroConvenio() {
+    /*** INICIO ARAVELLO 14/10/2019 ***/
+    public static void guardaRegistroConvenio( JDialog pDialogo, Frame myParentFrame) throws Throwable{
 
         log.debug("<<<<<<<<<<<Metodo: guardaRegistroConvenio>>>>>>>>>>>>>");
 
-        int vFila = tblConvenios.getSelectedRow();
-        if (vFila > -1) {
+//        int vFila = tblConvenios.getSelectedRow();
+//        if (vFila > -1) {
+        ArrayList listaConvenios = DBRefacturadorElectronico.findConvenio(
+                                                                VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                                VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal());
             VariablesConvenioBTLMF.vArrayList_ListaConvenio = new ArrayList();
-            VariablesConvenioBTLMF.vArrayList_ListaConvenio.add(tableModelListaconvenios.data.get(vFila));
+            VariablesConvenioBTLMF.vArrayList_ListaConvenio.add(listaConvenios.get(0));
             if (VariablesConvenioBTLMF.vArrayList_ListaConvenio.size() == 1) {
                 VariablesConvenioBTLMF.vCodConvenio =
                         FarmaUtility.getValueFieldArrayList(VariablesConvenioBTLMF.vArrayList_ListaConvenio, 0,
@@ -417,20 +422,21 @@ public class DlgListaConveniosBTLMF extends JDialog {
 
 
                 /*if(!VariablesConvenioBTLMF.vCodConvenioRel.equalsIgnoreCase("N"))*/
-                existeConvenioRelacionado = consultaConvenioRelacionado(VariablesConvenioBTLMF.vCodConvenioRel, this);
+                existeConvenioRelacionado = consultaConvenioRelacionado(VariablesConvenioBTLMF.vCodConvenioRel, pDialogo, myParentFrame);
 
                 if (existeConvenioRelacionado) {
                     //consulta con que pagara
-                    consultaDePago(myParentFrame);
+                    consultaDePago(pDialogo, myParentFrame);
                 } else {
-                    muestraMensaje();
-                    muestraDatosConvenio();
+                    /*** INICIO ARAVELLO 11/10/2019 ***///Comentado
+//                    muestraMensaje();
+                    /*** FIN    ARAVELLO 11/10/2019 ***/
+                    muestraDatosConvenio( pDialogo, myParentFrame);
                 }
             }
-        }
     }
 
-    public boolean consultaConvenioRelacionado(String pCodConvRel, JDialog pDialogo) {
+    public static boolean consultaConvenioRelacionado(String pCodConvRel, JDialog pDialogo, Frame myParentFrame) {
         boolean resultado = false;
         Map convRel = UtilityConvenioBTLMF.obtenerConvenio(pCodConvRel, pDialogo, myParentFrame);
         VariablesConvenioBTLMF.vCodConvenioRel = (String)convRel.get(ConstantsConvenioBTLMF.COL_COD_CONVENIO_REL);
@@ -456,11 +462,11 @@ public class DlgListaConveniosBTLMF extends JDialog {
     }
 
 
-    private void consultaDePago(Frame myParentFrame) {
+    private static void consultaDePago(JDialog jdialog, Frame pParentFrame) {
 
         log.debug("---Mostrando la pantalla de Opcion convenio2-- CONTADO y CREDITO");
-        DlgTipoConvenio d = new DlgTipoConvenio(myParentFrame, "Opcion Tipo de Convenio", true);
-        d.setLocationRelativeTo(myParentFrame);
+        DlgTipoConvenio d = new DlgTipoConvenio(pParentFrame, "Opcion Tipo de Convenio", true);
+        d.setLocationRelativeTo(pParentFrame);
         d.setVisible(true);
 
         log.debug("Aceptar::" + VariablesConvenioBTLMF.vAceptar);
@@ -468,8 +474,8 @@ public class DlgListaConveniosBTLMF extends JDialog {
             //actualizar las variables de convenios de acuerdo a la forma de pago Seleccionada
             //NO OLVIDAR..
             //SI PUSO ENTER Si debe de Mostrar Mensajes
-            muestraMensaje();
-            muestraDatosConvenio();
+//            muestraMensaje();
+            muestraDatosConvenio(jdialog,pParentFrame);
         }
     }
 
@@ -502,36 +508,43 @@ public class DlgListaConveniosBTLMF extends JDialog {
 
     }
 
-    private void muestraDatosConvenio() {
+    public static void muestraDatosConvenio(JDialog jdialog, Frame pParentFrame) {
         boolean solicitaCopago =
-            UtilityConvenioBTLMF.indCopagoConvenio(VariablesConvenioBTLMF.vCodConvenio, this, txtNombreConvenio);
+            UtilityConvenioBTLMF.indCopagoConvenio(VariablesConvenioBTLMF.vCodConvenio);
         log.debug("Solicita COPAGO >> " + solicitaCopago);
 
         if (solicitaCopago) {
             //VariablesConvenioBTLMF.vValorSelCopago=88;
-            cargaPantallaCopago();
+            /*** INICIO ARAVELLO 11/10/2019 ***/
+            VariablesConvenioBTLMF.vValorSelCopago = Double.parseDouble(VariablesRefacturadorElectronico.vComprobanteActual.getCoPago().trim());
+            VariablesConvenio.vPorcCoPago = String.valueOf(VariablesConvenioBTLMF.vValorSelCopago);
+//            cargaPantallaCopago();        
+            //llenar variable
+            /*** FIN    ARAVELLO 11/10/2019 ***/
         } else {
             VariablesConvenioBTLMF.vValorSelCopago = -1;
         }
 
         boolean solicitaDatos =
-            UtilityConvenioBTLMF.indDatoConvenio(VariablesConvenioBTLMF.vCodConvenio, this, txtNombreConvenio);
+            UtilityConvenioBTLMF.indDatoConvenio(VariablesConvenioBTLMF.vCodConvenio);
         log.debug("Solicita DATOS >> " + solicitaDatos);
 
         boolean ingresoDatos = false;
         if (solicitaDatos) {
             ingresoDatos = true;
-            DlgDatosConvenioBTLMF datos = new DlgDatosConvenioBTLMF(myParentFrame, "Datos Convenio", true);
-            datos.setVisible(true);
+            DlgDatosConvenioBTLMF.initialize();
+//            DlgDatosConvenioBTLMF datos = new DlgDatosConvenioBTLMF(myParentFrame, "Datos Convenio", true);
+//            datos.setVisible(true);
+            VariablesConvenioBTLMF.vAceptar = true;
             if (VariablesConvenioBTLMF.vAceptar) {
-                cargarListaPrecConvenio();
-                cerrarVentana(VariablesConvenioBTLMF.vAceptar);
+                cargarListaPrecConvenio(jdialog, pParentFrame);
+//                cerrarVentana(VariablesConvenioBTLMF.vAceptar);
 
             }
         } else {
             if (VariablesConvenioBTLMF.vAceptar) {
-                cargarListaPrecConvenio();
-                cerrarVentana(VariablesConvenioBTLMF.vAceptar);
+                cargarListaPrecConvenio(jdialog, pParentFrame);
+//                cerrarVentana(VariablesConvenioBTLMF.vAceptar);
             }
         }
         log.debug("Ingreso Datos>> " + ingresoDatos);
@@ -598,7 +611,7 @@ public class DlgListaConveniosBTLMF extends JDialog {
     }
 
 
-    private void irIngresoDatosConvenio(JTextField jtexto) {
+    /*private void irIngresoDatosConvenio(JTextField jtexto) {
 
         String nroTarjeta = jtexto.getText().trim();
         if (UtilityConvenioBTLMF.existeTarjeta(jtexto.getText(), this)) {
@@ -652,9 +665,9 @@ public class DlgListaConveniosBTLMF extends JDialog {
 
 
     }
+*/
 
-
-    public void irIngresoDatosConvenio2(JTextField jtexto) {
+/*    public void irIngresoDatosConvenio2(JTextField jtexto) {
         if (UtilityConvenioBTLMF.existeTarjeta(jtexto.getText(), this)) {
 
             if (VariablesConvenioBTLMF.vCodConvenioAux != null) {
@@ -662,14 +675,14 @@ public class DlgListaConveniosBTLMF extends JDialog {
                     if (VariablesConvenioBTLMF.vCodCliente != null) {
                         if(VariablesConvenioBTLMF.vCodCliente.length()==1){
                             muestraMensaje();
-                            muestraDatosConvenio();
+//                            muestraDatosConvenio();
                         }
                         else{
                         if (UtilityConvenioBTLMF.existeCliente(VariablesConvenioBTLMF.vCodCliente, this)) {
                             if (VariablesConvenioBTLMF.vDni != null) {
                                 boolean existeConvenioRelacionado = false;
-                                existeConvenioRelacionado =
-                                        consultaConvenioRelacionado(VariablesConvenioBTLMF.vCodConvenioRel, this);
+//                                existeConvenioRelacionado =
+//                                        consultaConvenioRelacionado(VariablesConvenioBTLMF.vCodConvenioRel, this);
                                 if (existeConvenioRelacionado) {
 
 
@@ -706,8 +719,8 @@ public class DlgListaConveniosBTLMF extends JDialog {
 
     }
 
-
-    public void iniciarVariablesGlobales() {
+*/
+    public static void iniciarVariablesGlobales() {
         VariablesConvenioBTLMF.vCodConvenioAux = null;
         VariablesConvenioBTLMF.vCodCliente = null;
         VariablesConvenioBTLMF.vCodConvenio = null;
@@ -742,17 +755,17 @@ public class DlgListaConveniosBTLMF extends JDialog {
         VariablesConvenioBTLMF.vFlgTipoConvenioRel = "";
 
     }
-
-    public void cargarListaPrecConvenio() {
+    /*** INICIO ARAVELLO 14/10/2019 ***/
+    public static void cargarListaPrecConvenio(JDialog jdialog, Frame pdialog) {
 
         log.debug("<<<<<<<<Metodo:cargar lista precios convenios>>>>>>>");
 
         log.debug("Inicio de Hilo");
-        SubProcesosBTLMF subproceso = new SubProcesosBTLMF("CARGA_LISTA_PRECIOS_CONV", myParentFrame, this);
+        SubProcesosBTLMF subproceso = new SubProcesosBTLMF("CARGA_LISTA_PRECIOS_CONV", pdialog, jdialog);
         subproceso.mostrar();
         log.debug("Fin de Hilo");
     }
-
+    /*** FIN    ARAVELLO 14/10/2019 ***/
     private void cargaPantallaCopago() {
         DlgCopagoConvenio dlgCopagoConvenio = new DlgCopagoConvenio(myParentFrame, "", true);
         dlgCopagoConvenio.setVisible(true);

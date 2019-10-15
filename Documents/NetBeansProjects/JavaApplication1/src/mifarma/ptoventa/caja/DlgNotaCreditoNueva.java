@@ -464,8 +464,10 @@ public class DlgNotaCreditoNueva extends JDialog {
                                
                                 trnxPuntos.imprimeVariables();
                                 trnxPuntos.reset();
-                                FarmaUtility.showMessage(this, "¡Nota Credito generada satisfactoriamente!",
-                                                         btnRelacionProductos);
+                                /*** INICIO ARAVELLO 23/09/2019 ***/
+                                /*FarmaUtility.showMessage(this, "¡Nota Credito generada satisfactoriamente!",
+                                                         btnRelacionProductos);*/
+                                /*** FIN    ARAVELLO 23/09/2019 ***/
                             } else {
                                 if (trnxPuntos.isVIndDescartaPedidoOrbis()) {
                                     trnxPuntos.descartaAnulacionOrbis();
@@ -510,7 +512,9 @@ public class DlgNotaCreditoNueva extends JDialog {
                                                                             VariablesCaja.vNumTurnoCaja, pListaPedidos)) {
                                     //LAIS SOLICITA ESTA CAMBIO , 08.05.2015
                                     //FarmaUtility.showMessage(this, "La nota de crédito se ha reimpreso con éxito .", null);
-                                    FarmaUtility.showMessage(this, "La nota de crédito se ha impreso con éxito .", null);
+                                    /*** INICIO ARAVELLO 23/09/2019 ***/ //Comentado
+                                    //FarmaUtility.showMessage(this, "La nota de crédito se ha impreso con éxito .", null);
+                                    /*** FIN    ARAVELLO 23/09/2019 ***/
                                 }
                             } else {
                                 if (UtilityCaja.getImpresionTicketAnulado(this, VariablesCaja.vNumPedVta_Anul, "",
@@ -518,7 +522,9 @@ public class DlgNotaCreditoNueva extends JDialog {
                                                                           VariablesCaja.vNumTurnoCaja, pListaPedidos)) {
                                     //LAIS SOLICITA ESTA CAMBIO , 08.05.2015
                                     //FarmaUtility.showMessage(this, "La nota de crédito se ha reimpreso con éxito .", null);
-                                    FarmaUtility.showMessage(this, "La nota de crédito se ha impreso con éxito .", null);
+                                    /*** INICIO ARAVELLO 23/09/2019 ***///Comentario
+                                    //FarmaUtility.showMessage(this, "La nota de crédito se ha impreso con éxito .", null);
+                                    /*** FIN    ARAVELLO 23/09/2019 ***/
                                 }
                             }
                             

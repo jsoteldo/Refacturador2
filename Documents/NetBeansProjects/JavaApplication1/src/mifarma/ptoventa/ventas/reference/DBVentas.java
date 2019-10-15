@@ -1038,7 +1038,7 @@ import org.slf4j.LoggerFactory;
         //dubilluz 14.10.2011
         //los codigos de productos del resumen de pedido.separados por @
         parametros.add(UtilityVentas.getProdVendidos());
-        log.debug(pTableModel.toString()+" invocando a PTOVENTA_VTA_LISTA.VTA_LISTA_PROD_COMP1(?,?,?,?):" + parametros);
+        log.debug("invocando a PTOVENTA_VTA_LISTA.VTA_LISTA_PROD_COMP1(?,?,?,?):" + parametros);
         FarmaDBUtility.executeSQLStoredProcedure(pTableModel, "PTOVENTA_VTA_LISTA.VTA_LISTA_PROD_COMP1(?,?,?,?)",
                                                  parametros, true);
     }

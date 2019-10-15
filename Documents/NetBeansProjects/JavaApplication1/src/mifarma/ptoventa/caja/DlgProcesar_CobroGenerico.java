@@ -4,6 +4,9 @@ package mifarma.ptoventa.caja;
 import com.gs.mifarma.componentes.JPanelWhite;
 import com.gs.mifarma.worker.JDialogProgress;
 
+import farmaciasperuanas.reference.DBRefacturadorElectronico;
+import farmaciasperuanas.reference.VariablesRefacturadorElectronico;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -114,7 +117,9 @@ public class DlgProcesar_CobroGenerico extends JDialogProgress {
 
     private void cerrarVentana(boolean pAceptar) {
         FarmaVariables.vAceptar = pAceptar;
-        VariablesVentas.verMetasVendedor=true;
+        /*** INICIO ARAVELLO 01/10/2019 ***/
+        VariablesVentas.verMetasVendedor=false;  
+        /*** FIN    ARAVELLO 01/10/2019 ***/
         this.setVisible(false);
         this.dispose();
     }
@@ -128,6 +133,25 @@ public class DlgProcesar_CobroGenerico extends JDialogProgress {
         if (indCobroBD) {
 //            vRetorno = finalizaCobroBD();
         } else if (indFinalizaCobro) {
+            /*** INICIO ARAVELLO 09/10/2019 ***/
+            try{
+                if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+                    DBRefacturadorElectronico.actualizarComprobantePago(
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getNumPedidoVentaNew()
+                                                                        );
+                    DBRefacturadorElectronico.actualizarFormaPago(
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getNumPedidoVentaNew()
+                                                                        );
+                } 
+            }catch(Throwable ex){
+                log.error("",ex);
+            }
+
+            /*** FIN    ARAVELLO 09/10/2019 ***/
             vRetorno = finalizaCobro();
         } else if (indAnularPedido) {
 //            vRetorno = anulaPedido();
@@ -153,6 +177,20 @@ public class DlgProcesar_CobroGenerico extends JDialogProgress {
         boolean vRetorno = false;
         //INICIO PROCESO DE COBRO
         if (isCovenio) {
+            /*** INICIO ARAVELLO 11/10/2019 ***/
+            try{
+                if(VariablesRefacturadorElectronico.vComprobanteActual != null){
+                    DBRefacturadorElectronico.actualizarInfoConvenio(
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodGrupoCia(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getCodLocal(),
+                                                                        VariablesRefacturadorElectronico.vComprobanteActual.getNumPedidoVentaNew()
+                                                                        );
+                }
+            }catch(Throwable ex){
+                log.error("",ex);
+            }
+
+            /*** FIN    ARAVELLO 11/10/2019 ***/
             tipoCobro = "C";
             vRetorno = cobroConvenio();
         } else {

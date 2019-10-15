@@ -1,9 +1,17 @@
 package mifarma.cpe;
 
 import java.io.File;
+
 import java.io.PrintWriter;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import java.util.GregorianCalendar;
 
 import javax.swing.JDialog;
 
@@ -362,7 +370,7 @@ public class UtilityCPE {
             
             // obtener trama de comprobante
             String tramaEPOS = getTramaDatos(pNumPedVta, pSecCompPago, pTipCompPago, pTipClienteConv);
-            CreateFile(tramaEPOS);
+            createFile(tramaEPOS);
             sc.setDatosConexion(conexionEPOS);
             sc.setIdCajaEpos(UtilityCPE.isDatoValido(UtilityCPE.getIdCajaEpos(),"ID CAJA EN EPOS"));
             sc.setTramaParaEpos(tramaEPOS);
@@ -412,18 +420,6 @@ public class UtilityCPE {
         return enviadoAlEPOS;
     }
     
-    
-    public void CreateFile(String trama) {
-           String nombre;
-           nombre = JOptionPane.showInputDialog("¿Tipo de Venta?");
-           String name = nombre + ".txt";
-           File file = new File("D:\\Documentacion3.0\\FacturacionElectronica\\TRAMAS\\FARMAVENTA\\" + name);
-           try (PrintWriter out = new PrintWriter(file)) {
-               out.println(trama);
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-       }
     /**
      *
      * @creado KMONCADA
@@ -469,4 +465,20 @@ public class UtilityCPE {
     public static void setVolverEjecutar(boolean volverEjecutar) {
         UtilityCPE.volverEjecutar = volverEjecutar;
     }
+
+    public void createFile(String trama) {
+        Date date = GregorianCalendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
+        String fileName = sdf.format(date);
+        String name = fileName + ".txt";
+        File
+            file = new File("D:\\ARAVELLO\\proyectos\\REFACTURADOR ELECTRONICO\\tramas\\" + name);
+        try (PrintWriter out = new PrintWriter(file)) {
+            out.println(trama);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
+
 }

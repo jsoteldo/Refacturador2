@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -177,6 +178,13 @@ public class DlgBusquedaMedicoCamp extends JDialog {
         FarmaUtility.centrarVentana(this);
         if(!isRegistroFarmaCMP){
             evaluaIngreso();
+        }
+        
+        try{
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_ESCAPE);
+        }catch(Throwable ex){
+            log.error("",ex);
         }
     }
 

@@ -450,7 +450,7 @@ public class DlgPedidosPendientesImpresion extends JDialog {
                         } else {
                             UtilityConvenioBTLMF.cargarVariablesConvenio(VariablesConvenioBTLMF.vCodConvenio, this, myParentFrame);
                         }
-                        VariablesConvenioBTLMF.vDatosConvenio = UtilityConvenioBTLMF.listaDatosConvenio(VariablesConvenioBTLMF.vCodConvenio, this, null);
+                        VariablesConvenioBTLMF.vDatosConvenio = UtilityConvenioBTLMF.listaDatosConvenio(VariablesConvenioBTLMF.vCodConvenio);
                         // KMONCADA 26.01.2015 todos los documentos utilizaran el flujo de reimpresion
                         UtilityConvenioBTLMF.procesoReImpresionComprobante(this, null, VariablesCaja.vSecComprobante);
                     } else {

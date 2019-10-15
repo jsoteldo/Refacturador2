@@ -66,7 +66,7 @@ public class VariablesConvenioBTLMF {
     public static int vInd_in_adicionales = 0;
 
     //dubilluz 26.10.2011
-    public static List vDatosConvenio = null;
+    public static List<Map> vDatosConvenio = null;
     public static List vDatosConvenioIngresar = new ArrayList();
     public static ArrayList listaDatos = new ArrayList();
     public static Map listaDatosNoEditables = new HashMap();

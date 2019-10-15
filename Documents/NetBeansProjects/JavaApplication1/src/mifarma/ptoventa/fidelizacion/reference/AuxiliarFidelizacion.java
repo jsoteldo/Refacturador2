@@ -235,7 +235,9 @@ public class AuxiliarFidelizacion {
             }
             
             if(VariablesPuntos.frmPuntos!=null && VariablesPuntos.frmPuntos.getBeanTarjeta() != null){
-                DlgMensajeBienvenida.showMensajeBienvenida(myParentFrame);
+                /*** INICIO ARAVELLO 10/10/2019 ***///Comentado
+//                DlgMensajeBienvenida.showMensajeBienvenida(myParentFrame);
+                /*** FIN    ARAVELLO 10/10/2019 ***/
             }else{
                 FarmaUtility.showMessage(dlgObj, "Bienvenido \n" +
                     VariablesFidelizacion.vNomCliente + " " + VariablesFidelizacion.vApePatCliente + " " +
