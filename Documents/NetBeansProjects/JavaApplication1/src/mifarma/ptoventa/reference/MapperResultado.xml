@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mifarma.ptoventa.referece.MapperResultado">
+
+    <resultMap type="mifarma.ptoventa.reference.BeanResultado" id="resultado">
+        <result property="strResultado" column="RESULTADO"/>
+    </resultMap>
+    <resultMap type="mifarma.ptoventa.encuesta.modelo.BeanEncuesta" id="encuesta">
+        <result property="codigoEncuesta" column="COD_ENCUESTA"/>
+    </resultMap>
+    <resultMap type="mifarma.ptoventa.encuesta.modelo.BeanPreguntaEncuesta" id="preguntaEncuesta">
+        <result property="codigoEncuesta" column="COD_ENCUESTA"/>
+        <result property="secPregunta" column="SEC_PREGUNTA"/>
+        <result property="descPegunta" column="DESC_PREGUNTA"/>
+        <result property="tipoPregunta" column="TIPO_PREGUNTA"/>
+        <result property="tipoValidacion" column="TIPO_VALIDACION"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.puntos.modelo.BeanAfiliadoLocal" id="afiliado">
+        <result property="dni" column="DNI"/>
+        <result property="nombre" column="NOMBRE"/>
+        <result property="apParterno" column="APE_PATERNO"/>
+        <result property="apMarterno" column="APE_MATERNO"/>
+        <result property="fechaNacimiento" column="FECHA_NAC"/>
+        <result property="genero" column="SEXO"/>
+        <result property="direccion" column="DIRECCION"/>
+        <result property="telefono" column="TELEFONO"/>
+        <result property="email" column="CORREO"/>
+        <result property="celular" column="CELULAR"/>
+        <result property="departamento" column="DEPARTAMENTO"/>
+        <result property="provincia" column="PROVINCIA"/>
+        <result property="distrito" column="DISTRITO"/>
+        <result property="tipoDireccion" column="TIPO_DIRECCION"/>
+        <result property="referencias" column="REFERENCIA"/>
+        <result property="tipoLugar" column="TIPO_LUGAR"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.reference.BeanImpresion" id="impresion">
+        <result property="IP_PC" column="IP_PC"/>
+        <result property="ID_DOC" column="ID_DOC"/>
+        <result property="ORDEN" column="ORDEN"/>
+        <result property="VALOR" column="VALOR"/>
+        <result property="TIPO_DATO" column="TIPO_DATO"/>
+        <result property="TAMANIO" column="TAMANIO"/>
+        <result property="ALINEACION" column="ALINEACION"/>
+        <result property="NEGRITA" column="NEGRITA"/>
+        <result property="SUBRAYADO" column="SUBRAYADO"/>
+        <result property="INTERLINEADO" column="INTERLINEADO"/>
+        <result property="COLOR_INVERSO" column="COLOR_INVERSO"/>
+        <result property="SALTO_LINEA" column="SALTO_LINEA"/>
+        <result property="LON_PTERMICO" column="LON_PTERMICO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.puntos.modelo.BeanListaProductos" id="listaproductosptos">
+        <result property="articulo" column="ARTICULO"/>
+        <result property="cantidad" column="CANTIDAD"/>
+        <result property="precioUnitario" column="PRECIO_UNIT"/>
+        <result property="importe" column="IMPORTE"/>
+        <result property="puntos" column="PUNTOS"/>
+        <result property="puntosAhorro" column="PUNTOS_AHORRO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.fidelizacion.modelo.BeanTipoDocIdentidad" id="tipoDocIdentidad">
+        <result property="codigo" column="CODIGO"/>
+        <result property="descripcion" column="DESCRIPCION"/>
+        <result property="mascara" column="MASCARA"/>
+        <result property="separadorMascara" column="SEPARADOR"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.reportes.modelo.ConcursoGigante.BeanPeriodoReporteGigante" id="periodoReporGigante">
+        <result property="mesId" column="MES_ID"/>
+        <result property="periodo" column="PERIODO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.reportes.modelo.ConcursoGigante.BeanResumenReporteGigante" id="resumenReporGigante">
+        <result property="categoria" column="CATEGORIA"/>
+        <result property="valMeta" column="META"/>
+        <result property="valAvance" column="AVANCE"/>
+        <result property="valCumplimiento" column="CUMPLIMIENTO"/>
+        <result property="valPrcProyectado" column="PORC_PROYECTADO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.lectorHuella.modelo.UsuarioFV" id="usuarioFV">
+        <result property="secUsuLocal" column="SEC_USU"/>
+        <result property="nroDocumento" column="NRO_DOCUMENTO"/>
+        <result property="apellidoPaterno" column="AP_PATERNO"/>
+        <result property="apellidoMaterno" column="AP_MATERNO"/>
+        <result property="nombres" column="NOMBRES"/>
+        
+        <result property="izquierdaMenique" column="IZQUIERDA_MENIQUE"/>
+        <result property="izquierdaAnular" column="IZQUIERDA_ANULAR"/>
+        <result property="izquierdaMedio" column="IZQUIERDA_MEDIO"/>
+        <result property="izquierdaIndice" column="IZQUIERDA_INDICE"/>
+        <result property="izquierdaPulgar" column="IZQUIERDA_PULGAR"/>
+        <result property="derechaPulgar" column="DERECHA_PULGAR"/>
+        <result property="derechaIndice" column="DERECHA_INDICE"/>
+        <result property="derechaMedio" column="DERECHA_MEDIO"/>
+        <result property="derechaAnular" column="DERECHA_ANULAR"/>
+        <result property="derechaMenique" column="DERECHA_MENIQUE"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.cliente.modelo.BeanClienteJuridico" id="clienteJuridico">
+        <result property="codCliente" column="COD_CLIENTE"/>
+        <result property="numDocumento" column="NUM_DOCUMENTO"/>
+        <result property="razonSocial" column="RAZON_SOCIAL"/>
+        <result property="direccion" column="DIRECCION"/>
+        <result property="agenteRetencion" column="AGENTE_RETENCION"/>
+        <result property="agentePercepcion" column="AGENTE_PERCEPCION"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCAntecedentesGinecologicos" id="hcAnteGinecologico">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="secuencialHC" column="SEC_HC_ANTECEDENTES"/>
+        <result property="edadMenarquia" column="EDAD_MENARQUIA"/>
+        <result property="rcMenstruacion" column="RC_MENSTRUACION"/>
+        <result property="rcCicloMenstrual" column="RC_CICLO_MENSTRUAL"/>
+        <result property="fur" column="FUR"/>
+        <result property="fpp" column="FPP"/>
+        <result property="rs" column="RS"/>
+        <result property="disminorrea" column="DISMINORREA"/>
+        <result property="nroGestaciones" column="GESTACIONES"/>
+        <result property="paridad" column="PARIDAD"/>
+        <result property="fup" column="FUP"/>
+        <result property="nroCesareas" column="CESAREAS"/>
+        <result property="pap" column="PAP"/>
+        <result property="mamografia" column="MAMOGRAFIA"/>
+        <result property="mac" column="MAC"/>
+        <result property="otros" column="OTROS"/>
+        <result property="indReglaRegular" column="IS_REGLA_REGULAR"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCAntecedentesPatologico" id="hcAntePatologico">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="secuencialHC" column="SEC_HC_ANTECEDENTES"/>
+        <result property="tipoPatologico" column="TIPO_PATOLOGIA"/>
+        <result property="codCIE10" column="COD_CIE_10"/>
+        <result property="codDiagnostico" column="COD_DIAGNOSTICO"/>
+        <result property="nombreDiagnostico" column="DES_DIAGNOSTICO"/>
+        <result property="descripcionPariente" column="DESC_PARIENTES"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCAntecedentesGenerales" id="hcAnteGenerales">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="secuencialHC" column="SEC_HC_ANTECEDENTES"/>
+        <result property="medicamentos" column="MEDICAMENTOS"/>
+        <result property="ram" column="RAM"/>
+        <result property="ocupacionales" column="OCUPACIONALES"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCAntecedentesFisiologicos" id="hcAnteFisiologico">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="secuencialHC" column="SEC_HC_ANTECEDENTES"/>
+        <result property="codGrupo" column="COD_MAESTRO"/>
+        <result property="tipoFisiologico" column="TIPO_FISIO"/>
+        <result property="codAnteFisiologico" column="COD_TIPO_FISIO"/>
+        <result property="descAnteFisiologico" column="DESC_FISIO"/>
+        <result property="opcionOtro" column="OPCION_OTRO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCAntecedentes" id="hcAntecedente">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="secuencialHC" column="SEC_HC_ANTECEDENTES"/>
+        <result property="estado" column="ESTADO_ANTECEDENTE"/>
+        <!--<result property="sexoPaciente" column="SEXO_CLI"/>-->
+        <result property="codMedico" column="COD_MEDICO_ANTE"/>
+        <association property="fisiologico" resultMap="hcAnteFisiologico"/>
+        <association property="generales" resultMap="hcAnteGenerales"/>
+        <association property="ginecologico" resultMap="hcAnteGinecologico"/>
+        <association property="patologicos" resultMap="hcAntePatologico"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.historiaclinica.BeanHCPaciente" id="hcPaciente">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="nroHistoriaFisica" column="NRO_HC_FISICA"/>
+        <result property="nroHistoriaActual" column="NRO_HC_ACTUAL"/>
+        <association property="beanAntecedente" resultMap="hcAntecedente"/>
+        <association property="beanConsultaMedica" resultMap="atencionMedica"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.BeanPaciente" id="paciente">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="nombre" column="NOMBRE"/>
+        <result property="apellidoPaterno" column="APE_PATERNO"/>
+        <result property="apellidoMaterno" column="APE_MATERNO"/>
+        <result property="sexo" column="SEXO_CLI"/>
+        <result property="tipDocumento" column="COD_TIP_DOCUMENTO"/>
+        <result property="numDocumento" column="NUM_DOCUMENTO"/>
+        <result property="estCivil" column="ESTADO_CIVIL"/>
+        <result property="fecNacimiento" column="FEC_NAC_CLI"/>
+        <result property="direccion" column="DIR_CLI"/>
+        <result property="gradoInstruccion" column="GRADO_INSTRUCCION"/>
+        <result property="ocupacion" column="OCUPACION"/>
+        <result property="centroEduLab" column="CENTRO_EDU_LAB"/>
+        <result property="email" column="EMAIL"/>
+        <result property="telFijo" column="FONO_CLI"/>
+        <result property="telCelular" column="CELL_CLI"/>
+        <result property="tipAcom" column="COD_TIP_ACOM"/>
+        <result property="nomAcom" column="NOM_ACOM"/>
+        <result property="tipDocAcom" column="COD_TIP_DOC_ACOM"/>
+        <result property="numDocAcom" column="NUM_DOC_ACOM"/>
+        <result property="numHCFisica" column="NRO_HC_FISICA"/>
+        <result property="fecHCFisica" column="FECHA_HC"/>
+        <result property="grupoSan" column="GRUPO_SANG"/>
+        <result property="factorRH" column="FACTOR_RH"/>
+        <result property="numHistCli" column="NRO_HC_ACTUAL"/>
+        <result property="nroHCAntecedente" column="SECUENCIA_ANTECEDENTE"/>
+        <result property="codLocalAntecedente" column="COD_LOCAL_ANTECENDENTE"/>
+        <result property="depUbigeo" column="DEP_UBIGEO"/>
+        <result property="pvrUbigeo" column="PRV_UBIGEO"/>
+        <result property="disUbigeo" column="DIS_UBIGEO"/>
+        <result property="depLugNac" column="DEP_LUG_NAC"/>
+        <result property="pvrLugNac" column="PRV_LUG_NAC"/>
+        <result property="disLugNac" column="DIS_LUG_NAC"/>
+        <result property="depLugPro" column="DEP_LUG_PRO"/>
+        <result property="pvrLugPro" column="PRV_LUG_PRO"/>
+        <result property="disLugPro" column="DIS_LUG_PRO"/>
+        <association property="historiaClinia" resultMap="hcPaciente"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.VtaCompAtencionMedica" id="VtaCompAtencionMedica">
+        <result property="cod_grupo_cia" column="COD_GRUPO_CIA"/>
+        <result property="cod_local" column="COD_LOCAL"/>
+        <result property="num_ped_vta" column="NUM_PED_VTA"/>
+        <result property="estado" column="ESTADO"/>
+        <result property="fec_crea" column="FEC_CREA"/>
+        <result property="usu_crea" column="USU_CREA"/>
+        <result property="fec_mod" column="FEC_MOD"/>
+        <result property="usu_mod" column="USU_MOD"/>
+        <result property="tip_comp_pago" column="TIP_COMP_PAGO"/>
+        <result property="num_comp_pago" column="NUM_COMP_PAGO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedOtros" id="atMedOtros">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="procedimiento" column="PROCEDIMIENTO"/>
+        <result property="interconsulta" column="INTERCONSULTA"/>
+        <result property="transferencia" column="TRANSFERENCIA"/>
+        <result property="descansoMedicoInicio" column="DESCANSO_INICIO"/>
+        <result property="descansoMedicoFin" column="DESCANSO_FIN"/>
+        <result property="proximaCita" column="PROX_CITA"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedExamenesAuxiliares" id="atMedExaAuxiliares">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="laboratorio" column="LABORATORIOS"/>
+        <result property="imagenes" column="IMAGENES"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedTrataRecetaDetalle" id="recetaDetalle">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroPedidoReceta" column="NRO_RECETA"/>
+        <result property="secuencialDetalle" column="SECUENCIA_RECETA"/>
+        <result property="codProducto" column="COD_PROD"/>
+        <result property="descProducto" column="DESC_PROD"/>
+        <result property="unidadVenta" column="UNID_VTA"/>
+        <result property="unidadVentaFraccion" column="UNID_VTA"/>
+        <result property="frecuenciaToma" column="FRECUENCIA_TOMA"/>
+        <result property="duracionToma" column="DURACION_TOMA"/>
+        <result property="codViaAdministracion" column="ID_VIA_ADMINISTRACION"/>
+        <result property="descViaAdministracion" column="DESC_VIA_ADMINISTRACION"/>
+        <result property="dosis" column="DOSIS_TOMA"/>
+        <result property="cantidadToma" column="CANT_ATENDIDA"/>
+        <result property="valFraccionamiento" column="VAL_FRAC"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedTrataReceta" id="recetaCabecera">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroPedidoReceta" column="NRO_RECETA"/>
+        <result property="cantidadItems" column="TOTAL_ITEMS"/>
+        <association property="detalles" resultMap="recetaDetalle"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedTratamiento" id="atMedTratamiento">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="nroPedidoReceta" column="NRO_RECETA"/>
+        <result property="validezReceta" column="VALIDEZ_RECETA"/>
+        <result property="indicacionesGenerales" column="INDICACIONES_GENERALES"/>
+        <association property="receta" resultMap="recetaCabecera"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedDiagnostico" id="atMedDiagnostico">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="secuencial" column="SEC_DIAG"/>
+        <result property="codCIE" column="COD_CIE_10"/>
+        <result property="codDiagnostico" column="COD_DIAGNOSTICO"/>
+        <result property="descripcionDiagnostico" column="DES_DIAGNOSTICO"/>
+        <result property="tipoDiagnostico" column="TIPO_DIAGNOSTICO"/>
+        <result property="descTipoDiagnostico" column="DESC_TIPO_DIAGNOSTICO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedExamenFisico" id="atMedExaFisico">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="estadoGeneral" column="ESTADO_GENERAL"/>
+        <result property="estadoConciencia" column="ESTADO_CONCIENCIA"/>
+        <result property="examenFisicoDirigido" column="EXA_FISICO_DIRIGIDO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedTriaje" id="atMedTriaje">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="funcionVitalPA1" column="PA_1"/>
+        <result property="funcionVitalPA2" column="PA_2"/>
+        <result property="funcionVitalFR" column="FR"/>
+        <result property="funcionVitalFC" column="FC"/>
+        <result property="funcionVitalT" column="TEMP"/>
+        <result property="funcionVitalPeso" column="PESO"/>
+        <result property="funcionvitalTalla" column="TALLA"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtMedEnfermedadActual" id="atMedEnfActual">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="motivoConsulta" column="MOTIVO_CONSULTA"/>
+        <result property="tipoInformante" column="TIPO_INFORMANTE"/>
+        <result property="tiempoEnfermedad" column="TIEMPO_ENFERMEDAD"/>
+        <result property="formaInicio" column="FORMA_INICIO"/>
+        <result property="signos" column="SIGNOS"/>
+        <result property="sintomas" column="SINTOMAS"/>
+        <result property="relatoCronologico" column="RELATO_CRONOLOGICO"/>
+        <result property="tipoApetito" column="APETITO"/>
+        <result property="tipoSed" column="SED"/>
+        <result property="tipoSuenio" column="SUENIO"/>
+        <result property="tipoOrina" column="ORINA"/>
+        <result property="tipoDeposicion" column="DEPOSICION"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.centromedico.domain.atencionmedica.BeanAtencionMedica" id="atencionMedica">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codCia" column="COD_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="nroAtencionMedica" column="NUM_ATEN_MED"/>
+        <result property="codPaciente" column="COD_PACIENTE"/>
+        <result property="codMedico" column="COD_MEDICO"/>
+        <result property="estado" column="ESTADO"/>
+        <result property="fechaCreacion" column="FECHA_CONSULTA"/>
+        <result property="indAdnulado" column="IND_ANULADO"/>
+        <result property="codEspecialidad" column="ESPECIALIDAD"/>
+        <association property="enfermedadActual" resultMap="atMedEnfActual"/>
+        <association property="triaje" resultMap="atMedTriaje"/>
+        <association property="examenFisico" resultMap="atMedExaFisico"/>
+        <association property="diagnostico" resultMap="atMedDiagnostico"/>
+        <association property="tratamiento" resultMap="atMedTratamiento"/>
+        <association property="examenesAuxiliares" resultMap="atMedExaAuxiliares"/>
+        <association property="otros" resultMap="atMedOtros"/>
+    </resultMap>
+    
+    <resultMap type="com.gs.mifarma.componentes.OptionComboBox" id="opcionComboCheck">
+        <result property="codigo" column="CODIGO"/>
+        <result property="label" column="ETIQUETA"/>
+        <result property="agregaOpcionOtro" column="OPCION_OTRO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.cpe.modelo.BeanComprobantesEPOS" id="comprobantesPagoEPOS">
+        <result property="codGrupoCia" column="COD_GRUPO_CIA"/>
+        <result property="codLocal" column="COD_LOCAL"/>
+        <result property="numPedVta" column="NUM_PED_VTA"/>
+        <result property="secCompPago" column="SEC_COMP_PAGO"/>
+        <result property="tipCompPago" column="TIP_COMP_PAGO"/>
+        <result property="tipClienteConvenio" column="TIP_CLIEN_CONVENIO"/>
+        <result property="indCredito" column="IND_COMP_CREDITO"/>
+        <result property="serie" column="SERIE"/>
+        <result property="correlativo" column="NUMERO"/>
+        <result property="dobleConfirmacion" column="DOBLE_CHECK"/>
+        <result property="nroComprobanteE" column="NRO_CP"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.cpe.modelo.BeanConexionEPOS" id="conexionEPOS">
+        <result property="ipServidor" column="SERVIDOR"/>
+        <result property="puerto" column="PUERTO"/>
+        <result property="modo" column="MODO"/>
+        <result property="rucCia" column="NRO_RUC"/>
+        <result property="codLocal" column="LOCAL"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.reference.BeanResultado" id="valor">
+        <result property="strResultado" column="VALOR"/>
+    </resultMap>
+    
+    <!--INI AOVIEDO 18/04/2017-->
+    <resultMap type="mifarma.ptoventa.reportes.modelo.ConcursoGarantizado.BeanPeriodoReporteGarantizado" id="periodoReporGarantizado">
+        <result property="mesId" column="MES_ID"/>
+        <result property="periodo" column="PERIODO"/>
+    </resultMap>
+    
+    <resultMap type="mifarma.ptoventa.reportes.modelo.ConcursoGarantizado.BeanResumenReporteGarantizado" id="resumenReporGarantizado">
+        <result property="categoria" column="CATEGORIA"/>
+        <result property="valMeta" column="META"/>
+        <result property="valAvance" column="AVANCE"/>
+        <result property="valCumplimiento" column="CUMPLIMIENTO"/>
+        <result property="valPrcProyectado" column="PORC_PROYECTADO"/>
+    </resultMap>
+    <!--FIN AOVIEDO 18/04/2017-->
+    
+</mapper>
